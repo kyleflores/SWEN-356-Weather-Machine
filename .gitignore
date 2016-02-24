@@ -1,0 +1,6 @@
+# Legacy HTML directory
+./HTML/
+
+# .pyc files
+*.pyc
+
