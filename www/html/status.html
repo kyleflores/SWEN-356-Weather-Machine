@@ -5,6 +5,8 @@
     
     <!-- Bootstrap's CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Webpage Address Icon -->
+    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png" />
     <style>
         #content {
             padding-top: 50px;
@@ -48,7 +50,7 @@
                 <p> Blah blah blah put some general info here.</p>
             </div>
 
-            <!-- Table -->
+            <!--  {% for data in Data %} -->
             <table class=table> 
                 <thead> 
                     <tr> 
@@ -59,18 +61,19 @@
                 <tbody> 
                     <tr> 
                         <td>Temperature</td> 
-                        <td>{filler}</td> 
+                        <td>{{ data.temperature }}</td> 
                     </tr> 
                     <tr> 
                         <td>Pressure</td> 
-                        <td>{filler}</td> 
+                        <td>{{ data.pressure }}</td> 
                     </tr> 
                     <tr> 
                         <td>Luxometer</td> 
-                        <td>{filler}</td> 
+                        <td>{{ data.lumens }}</td> 
                     </tr> 
                 </tbody> 
             </table>
+            <!-- {% endfor %} -->
         </div>
     </div>
     <!-- jQuery must be called first because Boostrap relies on it -->

@@ -5,6 +5,8 @@
     
     <!-- Bootstrap's CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- Webpage Address Icon -->
+    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png" />
     <style>
         #content {
             padding-top: 50px;
@@ -39,6 +41,42 @@
         </div>
     </nav>
 
+    <div class="container" id="content">
+        <h1>Status</h1>
+        <p class="lead">Here you will see readouts of the various forms of weather data.</p>
+        <div class="panel panel-default">
+            <div class="panel-heading">Weather Data</div>
+                <div class="panel-body">
+                <p> Blah blah blah put some general info here.</p>
+            </div>
+
+            <!--  {% for data in Data %} -->
+            <table class=table> 
+                <thead> 
+                    <tr> 
+                        <th>Data Type</th> 
+                        <th>Value</th> 
+                    </tr> 
+                </thead> 
+                <tbody> 
+                    <tr> 
+                        <td>Temperature</td> 
+                        <td>{{ data.temperature }}</td> 
+                    </tr> 
+                    <tr> 
+                        <td>Pressure</td> 
+                        <td>{{ data.pressure }}</td> 
+                    </tr> 
+                    <tr> 
+                        <td>Luxometer</td> 
+                        <td>{{ data.lumens }}</td> 
+                    </tr> 
+                </tbody> 
+            </table>
+            <!-- {% endfor %} -->
+        </div>
+    </div>
+    
     <div class="container" id="content">
         <h1>History</h1>
         <p class="lead">View the historical weather data associated with your device.</p>
