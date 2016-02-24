@@ -4,7 +4,7 @@
     <title>The Weather Machine</title>
     
     <!-- Bootstrap's CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Webpage Address Icon -->
     <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png" />
     <style>
@@ -55,26 +55,34 @@
                         <th>Value</th> 
                     </tr> 
                 </thead> 
-                <tbody> 
+                                <tbody> 
                     <tr> 
                         <td>Temperature</td> 
-                        <td>{{ data.temperature }}</td> 
+                        <td>{{ data.temperature }}° Celsius</td> 
                     </tr> 
                     <tr> 
                         <td>Pressure</td> 
-                        <td>{{ data.pressure }}</td> 
+                        <td>{{ data.pressure }} hPa</td> 
+                    </tr>
+                    <tr> 
+                        <td>Humidity</td> 
+                        <td>{{ data.humidity }} %RH</td> 
+                    </tr> 
+                    <tr> 
+                        <td>Wind Speed</td> 
+                        <td>CALCULATED VALUE</td> 
                     </tr> 
                     <tr> 
                         <td>Luxometer</td> 
-                        <td>{{ data.lumens }}</td> 
+                        <td>{{ data.lumens }} Lux</td> 
                     </tr> 
-                </tbody> 
+                </tbody>  
             </table>
             <!-- {% endfor %} -->
         </div>
     </div>
     <!-- jQuery must be called first because Boostrap relies on it -->
-    <script src="../js/jquery-1.12.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="js/jquery-1.12.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
