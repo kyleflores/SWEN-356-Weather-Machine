@@ -3,7 +3,7 @@ import time
 
 class SensorTag:
 
-    __init__(self, mac_address):
+    def __init__(self, mac_address):
         self.gatt_term = pexpect.spawn("sh run_gatt.sh " + mac_address)
         self.gatt_term.expect("\[*\]\[LE\]> ")
         connection_attempts = 0
