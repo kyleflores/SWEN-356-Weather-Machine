@@ -10,7 +10,7 @@ class SensorTag:
         while connection_attempts < 5:
             print("Attempting Sensor Tag connection #" + str(connection_attempts + 1))
             self.gatt_term.sendline("connect")
-            response = self.gatt_term.expect(["Error[.]*", "Connection Successfuli[.]*"])
+            response = self.gatt_term.expect(["Error[.]*", "Connection Successful[.]*"])
             if response == 0:
                 print("Could not connect to device at Sensor Tag at mac address: " + mac_address + "; make sure the device is on.")
                 print("Trying to connect again in 5 seconds.")
