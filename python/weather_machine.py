@@ -1,4 +1,6 @@
+from sensortag import SensorTag
+
 def main():
-  print("Hello World")
+  st = SensorTag("asdfasdfadf")
   
 main()
