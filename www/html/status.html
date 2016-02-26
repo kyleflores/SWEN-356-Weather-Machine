@@ -55,27 +55,42 @@
                         <th>Value</th> 
                     </tr> 
                 </thead> 
-                                <tbody> 
-                    <tr> 
+                <tbody> 
+                    <tr id="temp"> 
                         <td>Temperature</td> 
                         <td>{{ data.temperature }}&deg; Celsius</td>
+                        <div id="tInfo">
+                            <p>Temperature Suggestion</p>
+                        </div>
                     </tr> 
-                    <tr> 
+                    <tr id="pressure"> 
                         <td>Pressure</td> 
-                        <td>{{ data.pressure }} hPa</td> 
+                        <td>{{ data.pressure }} hPa</td>
+                        <div id="pInfo">
+                            <p>Pressure Suggestion</p>
+                        </div>
                     </tr>
-                    <tr> 
+                    <tr id="humid"> 
                         <td>Humidity</td> 
                         <td>{{ data.humidity }}&#37; RH</td>
+                        <div id="hInfo">
+                            <p>Humidity Suggestion</p>
+                        </div>
                     </tr> 
-                    <tr> 
+                    <tr id="wind"> 
                         <td>Wind Speed</td> 
-                        <td>CALCULATED VALUE</td> 
+                        <td>CALCULATED VALUE</td>
+                        <div id="wInfo">
+                            <p>Wind Suggestion</p>
+                        </div>
                     </tr> 
-                    <tr> 
+                    <tr id="lux"> 
                         <td>Luxometer</td> 
-                        <td>{{ data.lumens }} Lux</td> 
-                    </tr> 
+                        <td>{{ data.lumens }} Lux</td>
+                        <div id="lInfo">
+                            <p>Lux Suggestion</p>
+                        </div>
+                    </tr>
                 </tbody>  
             </table>
             <!-- {% endfor %} -->
@@ -84,5 +99,34 @@
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#tInfo").hide();
+            $("#pInfo").hide();
+            $("#hInfo").hide();
+            $("#wInfo").hide();
+            $("#lInfo").hide();
+        });
+        
+        $("#temp").click(function() {
+            $("#tInfo").toggle();
+        });
+        
+        $("#pressure").click(function() {
+            $("#pInfo").toggle();
+        });
+        
+        $("#humid").click(function() {
+            $("#hInfo").toggle();
+        });
+        
+        $("#wind").click(function() {
+            $("#wInfo").toggle();
+        });
+        
+        $("#lux").click(function() {
+            $("#lInfo").toggle();
+        });
+    </script>
 </body>
 </html>
