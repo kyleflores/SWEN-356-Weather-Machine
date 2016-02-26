@@ -1,1 +1,3 @@
-gatttool -b B0:B4:48:C9:B9:03 --interactive
+#!/bin/bash
+MAC_ADDRESS = $1
+gatttool -b $MAC_ADDRESS --interactive
