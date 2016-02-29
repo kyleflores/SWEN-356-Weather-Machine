@@ -64,11 +64,13 @@
                         </div>
                     </tr> 
                     <tr id="pressure"> 
-                        <td>Pressure</td> 
-                        <td>{{ data.pressure }} hPa</td>
+                        <td>Pressure</td>
+                        {% for barodata in BaroData %}
+                        <td>{{ barodata.barometric }} hPa</td>
                         <div id="pInfo">
                             <p>Pressure Suggestion</p>
                         </div>
+                        {% endfor %}
                     </tr>
                     <tr id="humid"> 
                         <td>Humidity</td> 
