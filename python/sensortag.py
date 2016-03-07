@@ -25,12 +25,23 @@ uuid_constants.BARO_CONF_UUID, uuid_constants.OPTI_CONF_UUID]:
             self.gatt_term.sendline("char-read-uuid " + uuid)
             time.sleep(1)
             self.gatt_term.expect('\r\n.*\[LE\]>')
-            #print(re.findall("0x[0-9a-fA-F]*",self.gatt_term.after.decode("utf-8"))[0])
             self.handles[uuid] = re.findall("0x[0-9a-fA-F]*",self.gatt_term.after.decode("utf-8"))[0]
-        #print("Handles found:\n" + str(self.handles))
-
-    def read(self, uuid):
-        pass
     
-    def write(self, uuid):
-        pass
+    def read(self, read_from):
+        self.gatt_term.sendline("char-read-uuid " + read_from)
+        time.sleep(1)
+        self.gatt_term.expect('\r\n.*\[LE\]>')
+        value = re.findall("value:([0-9a-fA-F ]*)",self.gatt_term.after.decode("utf-8"))[0]
+        value = value.replace(' ', '')        
+        return value
+    
+    def write(self, write_to, to_write):
+        self.gatt_term.sendline("char-write-cmd " + self.handles[write_to] + " " + to_write)
+        time.sleep(1)
+        self.gatt_term.expect('\r\n.*\[LE\]>')
+        self.gatt_term.sendline("char-read-uuid " + write_to)
+        time.sleep(1)
+        self.gatt_term.expect('\r\n.*\[LE\]>')
+        value = re.findall("value:([0-9a-fA-F ]*)",self.gatt_term.after.decode("utf-8"))[0]
+        value = value.replace(' ', '')
+        return (value is to_write)
