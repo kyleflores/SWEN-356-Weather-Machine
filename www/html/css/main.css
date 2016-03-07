@@ -1,0 +1,9 @@
+.navbar-fixed-top {
+    border-bottom: 5px solid indianred;
+}
+
+.navbar-inverse .navbar-nav>.active>a,
+.navbar-inverse .navbar-nav>.active>a:focus,
+.navbar-inverse .navbar-nav>.active>a:hover {
+    background-color: indianred;
+}
