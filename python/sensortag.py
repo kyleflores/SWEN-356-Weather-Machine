@@ -19,13 +19,10 @@ class SensorTag:
             print("Couldn't connect to SensorTag: Make sure the mac address is correct and the Sensortag is searching")
             return
         connected = True
-        for uuid in [uuid_constants.IRTEMP_CONF_UUID, uuid_constants.MVMT_CONF_UUID, uuid_constants.HUMID_CONF_UUID,
-uuid_constants.BARO_CONF_UUID, uuid_constants.OPTI_CONF_UUID]:
-            time.sleep(1)
-            self.gatt_term.sendline("char-read-uuid " + uuid)
-            time.sleep(1)
-            self.gatt_term.expect('\r\n.*\[LE\]>')
-            self.handles[uuid] = re.findall("0x[0-9a-fA-F]*",self.gatt_term.after.decode("utf-8"))[0]
+        
+        for k,v in uuid_constants.SENSOR_ON.items():
+            if not self.write(k,v):
+                print("Failed to turn on device with uuid =  " + str(k)
     
     def read(self, read_from):
         self.gatt_term.sendline("char-read-uuid " + read_from)
@@ -36,12 +33,17 @@ uuid_constants.BARO_CONF_UUID, uuid_constants.OPTI_CONF_UUID]:
         return value
     
     def write(self, write_to, to_write):
+        if not (write_to in self.handles):
+            self.get_handle(write_to)
         self.gatt_term.sendline("char-write-cmd " + self.handles[write_to] + " " + to_write)
         time.sleep(1)
         self.gatt_term.expect('\r\n.*\[LE\]>')
-        self.gatt_term.sendline("char-read-uuid " + write_to)
+        written = self.read(write_to)
+        print("written=" + written + ", to_write=" + to_write)
+        return (written == to_write)
+
+    def get_handle(self, uuid):
+        self.gatt_term.sendline("char-read-uuid " + uuid)
         time.sleep(1)
         self.gatt_term.expect('\r\n.*\[LE\]>')
-        value = re.findall("value:([0-9a-fA-F ]*)",self.gatt_term.after.decode("utf-8"))[0]
-        value = value.replace(' ', '')
-        return (value is to_write)
+        self.handles[uuid] = re.findall("0x[0-9a-fA-F]*",self.gatt_term.after.decode("utf-8"))[0]
