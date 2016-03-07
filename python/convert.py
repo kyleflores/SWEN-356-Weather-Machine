@@ -25,6 +25,17 @@ def irtemp(raw):
     Converts from hex string to float for temperature data
     from the HDC1000 sensor
 '''
+def temp(raw):
+    # if obj temp
+    # if amb temp
+    it = int(raw >> 2)
+    temp = float(it) * SCALE_LSB
+    return temp
+
+'''
+    Converts from hex string to float for humidity data
+    from the HDC1000 sensor
+'''
 def humid_temp(raw):
     temp = reverse_bytes(raw)
     temp = int(temp, 16)
