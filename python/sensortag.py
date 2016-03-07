@@ -18,12 +18,12 @@ class SensorTag:
         except pexpect.exceptions.TIMEOUT:
             print("Couldn't connect to SensorTag: Make sure the mac address is correct and the Sensortag is searching")
             return
-        connected = True
+        self.connected = True
         
         for k,v in uuid_constants.SENSOR_ON.items():
             if not self.write(k,v):
-                print("Failed to turn on device with uuid =  " + str(k)
-    
+                print("Failed to turn on device with uuid =  " + str(k))
+
     def read(self, read_from):
         self.gatt_term.sendline("char-read-uuid " + read_from)
         time.sleep(1)
@@ -39,7 +39,6 @@ class SensorTag:
         time.sleep(1)
         self.gatt_term.expect('\r\n.*\[LE\]>')
         written = self.read(write_to)
-        print("written=" + written + ", to_write=" + to_write)
         return (written == to_write)
 
     def get_handle(self, uuid):
