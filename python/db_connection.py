@@ -1,5 +1,14 @@
 import sqlite3
 
+class db_connection:
+  
+  con = None
+  cursor = None
+  
+  def __init__(self, file_name):
+      pass
+
+'''
 def main():
   con = sqlite3.connect('sensor_data.sqlite')
   print("Opened database successfully")
@@ -11,3 +20,4 @@ def main():
     print("barometric = ", row[2], "\n")
   con.close()
 main()
+'''
