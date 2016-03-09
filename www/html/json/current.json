@@ -1,0 +1,31 @@
+{
+    "weatherdata": {
+        "time": "2016-03-09T12:00:00.511Z",
+        "baro": [
+          {"id": "0"},
+          {"temp": "100"},
+          {"barometric": "250"}
+        ],
+        "humid": [
+          {"id": "0"},
+          {"temp": "57"},
+          {"humidity": "70"}
+        ],
+        "irtemp": [
+          {"id": "0"},
+          {"objtemp": "95"},
+          {"ambtemp": "97"}
+        ],
+        "mvmt": [
+          {"id": "0"},
+          {"objtemp": "95"},
+          {"ambtemp": "97"},
+          {"id": "0"},
+          {"objtemp": "95"},
+          {"ambtemp": "97"},
+          {"id": "0"},
+          {"objtemp": "95"},
+          {"ambtemp": "97"}
+        ]
+    }
+}

@@ -68,12 +68,10 @@
                     </tr> 
                     <tr id="pressure"> 
                         <td>Pressure</td>
-                        {% for barodata in BaroData %}
-                        <td>{{ barodata.barometric }} hPa</td>
+                        <td id="baroData"> null </td>
                         <div id="pInfo">
                             <p>Pressure Suggestion</p>
                         </div>
-                        {% endfor %}
                     </tr>
                     <tr id="humid"> 
                         <td>Humidity</td> 
@@ -111,6 +109,20 @@
             $("#hInfo").hide();
             $("#wInfo").hide();
             $("#lInfo").hide();
+            $.ajax({
+                url: "./json/current.json",
+                //force to handle it as text
+                dataType: "text",
+                success: function(data) {
+
+                    //data downloaded so we call parseJSON function 
+                    //and pass downloaded data
+                    var json = $.parseJSON(data);
+                    //now json variable contains data in json format
+                    //let's display a few items
+                    $('#baroData').text(json.weatherdata.baro.barometric + " hPa");
+                }
+            });
         });
         
         $("#temp").click(function() {
