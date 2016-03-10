@@ -3,7 +3,7 @@ import uuid_constants
 import convert
 import time
 
-READING_DELAY = 90
+READING_DELAY = 60
 
 def main():
     st = SensorTag("")
@@ -43,7 +43,6 @@ def main():
         #data = st.read(uuid_constants.MVMT_DATA_UUID)
         #process movement data        
 
-        #time.sleep(READING_DELAY)
-        time.sleep(3)
+        time.sleep(READING_DELAY)
 
 main()
