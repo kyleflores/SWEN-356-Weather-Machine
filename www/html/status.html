@@ -61,35 +61,28 @@
                 <tbody> 
                     <tr id="temp"> 
                         <td>Temperature</td> 
-                        <td>{{ data.temperature }}&deg; Celsius</td>
+                        <td id="tempData"></td>
                         <div id="tInfo">
                             <p>Temperature Suggestion</p>
                         </div>
                     </tr> 
                     <tr id="pressure"> 
                         <td>Pressure</td>
-                        <td id="baroData"> null </td>
+                        <td id="baroData"></td>
                         <div id="pInfo">
                             <p>Pressure Suggestion</p>
                         </div>
                     </tr>
                     <tr id="humid"> 
                         <td>Humidity</td> 
-                        <td>{{ data.humidity }}&#37; RH</td>
+                        <td id="humidData"></td>
                         <div id="hInfo">
                             <p>Humidity Suggestion</p>
                         </div>
                     </tr> 
-                    <tr id="wind"> 
-                        <td>Wind Speed</td> 
-                        <td>CALCULATED VALUE</td>
-                        <div id="wInfo">
-                            <p>Wind Suggestion</p>
-                        </div>
-                    </tr> 
                     <tr id="lux"> 
                         <td>Luxometer</td> 
-                        <td>{{ data.lumens }} Lux</td>
+                        <td id="luxData"></td>
                         <div id="lInfo">
                             <p>Lux Suggestion</p>
                         </div>
@@ -107,20 +100,17 @@
             $("#tInfo").hide();
             $("#pInfo").hide();
             $("#hInfo").hide();
-            $("#wInfo").hide();
             $("#lInfo").hide();
             $.ajax({
-                url: "./json/current.json",
-                //force to handle it as text
-                dataType: "text",
+                url: "json/current.json",
+                dataType: "json",
                 success: function(data) {
+                    var weatherdata = data;
 
-                    //data downloaded so we call parseJSON function 
-                    //and pass downloaded data
-                    var json = $.parseJSON(data);
-                    //now json variable contains data in json format
-                    //let's display a few items
-                    $('#baroData').text(json.weatherdata.baro.barometric + " hPa");
+                    $('#tempData').html(weatherdata.irtemp.objtemp + "&deg;" + " Celsius");
+                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
+                    $('#baroData').html(weatherdata.baro.barometric + " hPa");
+                    $('#luxData').html(weatherdata.opti.light + " lux");
                 }
             });
         });

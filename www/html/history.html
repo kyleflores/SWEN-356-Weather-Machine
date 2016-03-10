@@ -58,28 +58,24 @@
                         <th>Value</th> 
                     </tr> 
                 </thead> 
-                <tbody> 
-                    <tr> 
-                        <td>Temperature</td> 
-                        <td>{{ data.temperature }}&deg; Celsius</td>
-                    </tr> 
-                    <tr> 
-                        <td>Pressure</td> 
-                        <td>{{ data.pressure }} hPa</td> 
-                    </tr>
-                    <tr> 
-                        <td>Humidity</td> 
-                        <td>{{ data.humidity }}&#37; RH</td>
-                    </tr> 
-                    <tr> 
-                        <td>Wind Speed</td> 
-                        <td>CALCULATED VALUE</td> 
-                    </tr> 
-                    <tr> 
-                        <td>Luxometer</td> 
-                        <td>{{ data.lumens }} Lux</td> 
-                    </tr> 
-                </tbody> 
+                    <tbody> 
+                        <tr id="temp"> 
+                            <td>Temperature</td> 
+                            <td id="tempData"></td>
+                        </tr> 
+                        <tr id="pressure"> 
+                            <td>Pressure</td>
+                            <td id="baroData"></td>
+                        </tr>
+                        <tr id="humid"> 
+                            <td>Humidity</td> 
+                            <td id="humidData"></td>
+                        </tr> 
+                        <tr id="lux"> 
+                            <td>Luxometer</td> 
+                            <td id="luxData"></td>
+                        </tr>
+                    </tbody> 
             </table>
             <!-- {% endfor %} -->
         </div>
