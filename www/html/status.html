@@ -115,6 +115,30 @@
             });
         });
         
+        // Once the timer runs out, grabs new data.
+        function refreshData(interval) {
+            return setInterval(grabData, interval); 
+        }
+        
+        // Makes and AJAX call and refreshes the information on the page.
+        function grabData() {
+            $.ajax({
+                url: "json/current.json",
+                dataType: "json",
+                success: function(data) {
+                    var weatherdata = data;
+
+                    $('#tempData').html(weatherdata.irtemp.objtemp + "&deg;" + " Celsius");
+                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
+                    $('#baroData').html(weatherdata.baro.barometric + " hPa");
+                    $('#luxData').html(weatherdata.opti.light + " lux");
+                }
+            });
+        }
+        
+        // Calls the refresh data function every 5 seconds.
+        var timer = refreshData(5000);
+        
         $("#temp").click(function() {
             $("#tInfo").toggle();
         });
