@@ -48,7 +48,7 @@ def main():
         dicts['light'] = str(row[2])
         data_wrapper["opti"] = dicts
 
-    j = json.dumps(data_wrapper, indent=4, separators=(',', ': '))
+    j = json.dumps(data_wrapper, indent=2, separators=(',', ': '))
     data_file = '../www/html/json/current.json'
     f = open(data_file, 'w')
     f.write(j)
