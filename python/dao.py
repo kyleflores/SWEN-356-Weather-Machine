@@ -14,6 +14,10 @@ class DAO:
         self.cursor = self.connection.cursor()
         self.saving = saving
 
+    def save(self):
+        if self.saving:
+            self.connection.commit()
+
     def close(self):
         self.save()
         self.connection.close()
@@ -40,20 +44,12 @@ class DAO:
                             (datetime.now(),raw,round(light,2)))
         self.save()
 
-    def save(self):
-        if self.saving:
-            self.connection.commit()
+    def get_irtemp(self,entries=1):
+        data = self.cursor.execute("SELECT * FROM IRTEMP AS ir WHERE ir.time > ? ORDER BY ir.id DESC LIMIT ?",
+                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0),str(entries))).fetchall()
+        return data
+    def get_hourly_irtemp(self):
+        pass
 
-'''
-def main():
-  con = sqlite3.connect('sensor_data.sqlite')
-  print("Opened database successfully")
-  cur = con.cursor()
-  cur.execute("SELECT time, temp, barometric  FROM BARO")
-  for row in cur:
-    print("time = ", row[0])
-    print("temp = ", row[1])
-    print("barometric = ", row[2], "\n")
-  con.close()
-main()
-'''
+    def get_daily_irtemp(self):
+        pass
