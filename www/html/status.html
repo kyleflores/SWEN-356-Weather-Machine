@@ -107,7 +107,7 @@
                 success: function(data) {
                     var weatherdata = data;
 
-                    $('#tempData').html(weatherdata.irtemp.objtemp + "&deg;" + " Celsius");
+                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
                     $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
                     $('#baroData').html(weatherdata.baro.barometric + " hPa");
                     $('#luxData').html(weatherdata.opti.light + " lux");
