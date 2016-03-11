@@ -67,8 +67,13 @@
                 dataType: "json",
                 success: function(data) {
                     var weatherdata = data;
-
-                    $('#prData').html(weatherdata.irtemp.objtemp);
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    
+                    var precipChance = irINT * humidINT / baroINT
+                    
+                    $('#prData').html(precipChance + "%");
                 }
             });
         });
@@ -85,8 +90,13 @@
                 dataType: "json",
                 success: function(data) {
                     var weatherdata = data;
-                                        
-                    $('#prData').html(weatherdata.irtemp.objtemp+"% Chance");
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    // formula to determine precip chance below
+                    var precipChance = irINT * humidINT / baroINT
+                    
+                    $('#prData').html(precipChance + "%");
                 }
             });
         }
