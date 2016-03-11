@@ -5,7 +5,7 @@ import collections
 def main():
     con = sqlite3.connect('sensor_data.sqlite')
     cur = con.cursor()
-    cur.execute("SELECT id, time, temp, barometric  FROM BARO")
+    cur.execute("SELECT id, time, temp, pressure FROM BARO")
     data_array = []
     for row in cur:
         dicts = collections.OrderedDict()
@@ -15,13 +15,15 @@ def main():
         dicts['id'] = str(row[0])
         dicts['time'] = str(row[1])
         dicts['temp'] = str(row[2])
-        dicts['barometric'] = str(row[3])
+        dicts['pressure'] = str(row[3])
         data_array.append(dicts)
     con.close()
     j = json.dumps(data_array)
     data_file = '../www/html/json/current.json'
     f = open(data_file, 'w')
-    print(f)
+    f.write(j)
+
+    # print(f)
     print(j)
     
 main()
