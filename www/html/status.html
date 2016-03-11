@@ -108,8 +108,8 @@
                     var weatherdata = data;
 
                     $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
+                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
                     $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
-                    $('#baroData').html(weatherdata.baro.barometric + " hPa");
                     $('#luxData').html(weatherdata.opti.light + " lux");
                 }
             });
@@ -129,8 +129,8 @@
                     var weatherdata = data;
 
                     $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
+                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
                     $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
-                    $('#baroData').html(weatherdata.baro.barometric + " hPa");
                     $('#luxData').html(weatherdata.opti.light + " lux");
                 }
             });

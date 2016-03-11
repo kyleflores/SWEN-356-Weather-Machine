@@ -46,10 +46,68 @@
 
     <div class="container" id="content">
             <h1>Welcome to The Weather Machine</h1>
-            <p class="lead">This app will display accurate weather data from right outside your home.</p>
+            <p class="lead">
+                    This app will display accurate weather data from right outside your home.
+            </p>
+            <body id="precip">
+                <body><b>Chance of Precipitation</b></body>
+                <div id="prInfo">
+                    <p id="prData"></p>
+                </div>  
+            </body>
     </div>
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#prInfo").hide();
+            $.ajax({
+                url: "json/current.json",
+                dataType: "json",
+                success: function(data) {
+                    var weatherdata = data;
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    
+                    var precipChance = irINT * humidINT / baroINT
+                    
+                    $('#prData').html(precipChance + "%");
+                }
+            });
+        });
+        
+        // Once the timer runs out, grabs new data.
+        function refreshData(interval) {
+            return setInterval(grabData, interval);
+        }
+        
+        // Makes and AJAX call and refreshes the information on the page.
+        function grabData() {
+            $.ajax({
+                url: "json/current.json",
+                dataType: "json",
+                success: function(data) {
+                    var weatherdata = data;
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    // formula to determine precip chance below
+                    var precipChance = irINT * humidINT / baroINT
+                    
+                    $('#prData').html(precipChance + "%");
+                }
+            });
+        }
+        
+        // Calls the refresh data function every minute.
+        var timer = refreshData(60000);
+        
+        $("#precip").click(function() {
+            $("#prInfo").toggle();
+        });
+        
+    </script>
 </body>
 </html>
