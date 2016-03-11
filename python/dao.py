@@ -20,9 +20,24 @@ class DAO:
         self.cursor = None
         self.connection = None
 
-    def store_irtemp(self, raw, abj_temp, amb_temp):
+    def store_irtemp(self, raw, obj_temp, amb_temp):
         self.cursor.execute("INSERT INTO IRTEMP (time,raw,objTemp,ambTemp) VALUES (?,?,?,?)",
-                            (datetime.now(),raw,round(abj_temp,2),round(amb_temp,2)))
+                            (datetime.now(),raw,round(obj_temp,2),round(amb_temp,2)))
+        self.save()
+
+    def store_humid(self, raw, temp, humidity):
+        self.cursor.execute("INSERT INTO HUMID (time,raw,temp,humidity) VALUES (?,?,?,?)",
+                            (datetime.now(),raw,round(temp,2),round(humidity,2)))
+        self.save()
+
+    def store_baro(self, raw, temp, pressure):
+        self.cursor.execute("INSERT INTO BARO (time,raw,temp,pressure) VALUES (?,?,?,?)",
+                            (datetime.now(),raw,round(temp,2),round(pressure,2)))
+        self.save()
+
+    def store_opti(self,raw,light):
+        self.cursor.execute("INSERT INTO OPTI (time,raw,light) VALUES (?,?,?)",
+                            (datetime.now(),raw,round(light,2)))
         self.save()
 
     def save(self):

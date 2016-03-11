@@ -14,7 +14,7 @@ def main():
     #Add barometric pressure data table
     new_db_cursor.execute("""
         CREATE TABLE "BARO" ("id" INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE , "time" DATETIME NOT NULL ,
-"raw" TEXT NOT NULL , "temp" FLOAT NOT NULL , "barometric" FLOAT NOT NULL )
+"raw" TEXT NOT NULL , "temp" FLOAT NOT NULL , "pressure" FLOAT NOT NULL )
         """)
 
     #Add humidity sensor data table
