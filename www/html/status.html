@@ -117,7 +117,7 @@
         
         // Once the timer runs out, grabs new data.
         function refreshData(interval) {
-            return setInterval(grabData, interval); 
+            return setInterval(grabData, interval);
         }
         
         // Makes and AJAX call and refreshes the information on the page.
@@ -128,7 +128,7 @@
                 success: function(data) {
                     var weatherdata = data;
 
-                    $('#tempData').html(weatherdata.irtemp.objtemp + "&deg;" + " Celsius");
+                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
                     $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
                     $('#baroData').html(weatherdata.baro.barometric + " hPa");
                     $('#luxData').html(weatherdata.opti.light + " lux");
@@ -136,8 +136,8 @@
             });
         }
         
-        // Calls the refresh data function every 5 seconds.
-        var timer = refreshData(5000);
+        // Calls the refresh data function every minute.
+        var timer = refreshData(60000);
         
         $("#temp").click(function() {
             $("#tInfo").toggle();

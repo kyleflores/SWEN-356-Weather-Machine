@@ -12,12 +12,7 @@
     },
     "irtemp": {
       "id": "0",
-      "objtemp": "95",
-      "ambtemp": "97"
-    },
-    "mvmt": {
-      "id": "0",
-      "objtemp": "95",
+      "objtemp": "100",
       "ambtemp": "97"
     },
     "opti": {
