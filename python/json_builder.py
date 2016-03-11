@@ -1,14 +1,50 @@
 import json
 import sqlite3
 import collections
+from dao import DAO
 
-def main():
-    con = sqlite3.connect('sensor_data.sqlite')
-    cur = con.cursor()
+class JSONBuilder:
 
     # Set up wrapper
     data_wrapper = collections.OrderedDict()
+    db = None
 
+
+    #db = DAO("sensor_data.sqlite", False)
+    def __init__(self, db):
+        self.db = db
+        
+    #def buildBaro(self):
+        baro = self.db.get_baro()
+        dicts = collections.OrderedDict()
+        dicts['id'] = str(baro[0])
+        dicts['time'] = str(baro[1])
+        dicts['temp'] = str(baro[2])
+        dicts['pressure'] = str(baro[3])
+        data_wrapper["baro"] = dicts
+    #def buildHumid(self):
+    def buildIRTemp(self):
+        irtemp = self.db.get_irtemp()
+        dicts = collections.OrderedDict()
+        dicts['id'] = str(irtemp[0][0])
+        dicts['time'] = str(irtemp[0][1])
+        dicts['objtemp'] = str(irtemp[0][3])
+        dicts['ambtemp'] = str(irtemp[0][4])
+        self.data_wrapper["irtemp"] = dicts
+    #def buildOpti(self):
+    def buildFile(self):
+        #data_wrapper["baro"] = self.db.get_baro()
+        #data_wrapper["humid"] = self.db.get_humid()
+
+        #data_wrapper["opti"] = self.db.get_opti()
+        self.buildIRTemp()
+        j = json.dumps(self.data_wrapper, indent=4, separators=(',', ': '))
+        data_file = '../www/html/json/current.json'
+        f = open(data_file, 'w')
+        f.write(j)
+        print(j)
+
+    '''
     # Get barometer data
     cur.execute("SELECT id, time, temp, pressure FROM BARO")
     for row in cur:
@@ -55,5 +91,8 @@ def main():
 
     print(j)
     con.close()
-    
-main()
+'''
+
+#for debugging
+jsonB = JSONBuilder(DAO("sensor_data.sqlite",False))
+jsonB.buildFile()
