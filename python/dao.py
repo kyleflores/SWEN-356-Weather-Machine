@@ -9,15 +9,19 @@ class DAO:
     connection = None
     cursor = None
     saving = False
+    file_name = ""
 
-    def __init__(self, file_name, saving):
-        self.connection = sqlite3.connect(DB_NAME)
-        self.cursor = self.connection.cursor()
-        self.saving = saving
+    def __init__(self, file_name):
+        self.file_name = file_name
 
     def save(self):
         if self.saving:
             self.connection.commit()
+
+    def open(self, saving):
+        self.connection = sqlite3.connect(self.file_name)
+        self.cursor = self.connection.cursor()
+        self.saving = saving
 
     def close(self):
         self.save()

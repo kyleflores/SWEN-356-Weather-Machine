@@ -17,11 +17,12 @@ def main():
     #Wait for initial data gathering to be done
     time.sleep(1)
    
-    db = DAO("sensor_data.sqlite",True)
+    db = DAO("sensor_data.sqlite")
     jb = JSONBuilder(db)
     
     data = None
     while(True):
+        db.open(True)
         data = st.read(uuid_constants.IRTEMP_DATA_UUID)
         obj_temp = convert.irtemp(data[0:len(data)//2])
         amb_temp = convert.irtemp(data[len(data)//2:]) 
@@ -53,7 +54,12 @@ def main():
         print("-----------------------Optical Sensor----------------------")
         print("Light = " + str(round(lux,2)) + " Lux")
 
+        db.close()      
+
+        db.open(False)
         jb.buildFile()
+        db.close()
+
         time.sleep(READING_DELAY)
         
     db.close()
