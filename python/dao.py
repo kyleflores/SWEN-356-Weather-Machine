@@ -62,11 +62,12 @@ class DAO:
         for hour in range(0,24):
             while(i < len(data)):
                 data_el = datetime.strptime(data[i][1],TIME_FORMAT)
-                if data_el.hour == ((hour + last_day.hour) % 24):
+                data_hour = (data_el.hour - last_day.hour + (0 if data_el.day == last_day.day else 24)) % 24
+                if data_hour == hour:#((hour + last_day.hour) % 24):
                     hourly_data.append(data[i])
                     i += 1
                     break
-                elif data_el.hour > ((hour + last_day.hour) % 24):
+                elif data_hour > hour:#((hour + last_day.hour) % 24):
                     break
                 i += 1
 
