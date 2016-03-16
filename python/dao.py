@@ -45,14 +45,15 @@ class DAO:
                             (datetime.now(),raw,round(light,2)))
         self.save()
 
-    def get_irtemp(self,entries=1):
-        data = self.cursor.execute("SELECT * FROM IRTEMP AS ir WHERE ir.time > ? ORDER BY ir.time DESC LIMIT ?",
-                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0),str(entries))).fetchall()
+    def get_recent(self,table_name, entries=1):
+        data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS t WHERE t.time > ? ORDER BY t.time DESC LIMIT ?",
+                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0) - timedelta(days=1),
+                                    str(entries))).fetchall()
         return data
 
-    def get_hourly_irtemp(self):
+    def get_hourly(self, table_name):
         last_day = datetime.today().replace(minute=0,second=0,microsecond=0) - timedelta(days=1)
-        data = self.cursor.execute("SELECT * FROM IRTEMP AS ir WHERE ir.time > ? ORDER BY ir.time ASC",
+        data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS ir WHERE ir.time > ? ORDER BY ir.time ASC",
                                    (last_day,)).fetchall()
 
         hourly_data = []
@@ -71,22 +72,7 @@ class DAO:
 
         return hourly_data
 
-    def get_daily_irtemp(self):
+    def get_daily(self, table_name):
         pass
-
-    def get_humid(self,entries=1):
-        data = self.cursor.execute("SELECT * FROM HUMID AS h WHERE h.time > ? ORDER BY h.id DESC LIMIT ?",
-                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0),str(entries))).fetchall()
-        return data
-
-    def get_baro(self,entries=1):
-        data = self.cursor.execute("SELECT * FROM BARO AS b WHERE b.time > ? ORDER BY b.id DESC LIMIT ?",
-                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0),str(entries))).fetchall()
-        return data
-
-    def get_opti(self,entries=1):
-        data = self.cursor.execute("SELECT * FROM OPTI AS o WHERE o.time > ? ORDER BY o.id DESC LIMIT ?",
-                                   (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0),str(entries))).fetchall()
-        return data
 
 

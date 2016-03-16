@@ -51,6 +51,8 @@ def main():
         print("-----------------------Optical Sensor----------------------")
         print("Light = " + str(round(lux,2)) + " Lux")
 
+
+
         time.sleep(READING_DELAY)
     
     db.close()
