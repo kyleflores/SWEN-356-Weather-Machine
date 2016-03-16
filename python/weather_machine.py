@@ -3,6 +3,7 @@ import uuid_constants
 import convert
 import time
 from dao import DAO
+from json_builder import JSONBuilder
 
 READING_DELAY = 55
 
@@ -17,7 +18,8 @@ def main():
     time.sleep(1)
    
     db = DAO("sensor_data.sqlite",True)
- 
+    jb = JSONBuilder(db)
+    
     data = None
     while(True):
         data = st.read(uuid_constants.IRTEMP_DATA_UUID)
@@ -51,10 +53,9 @@ def main():
         print("-----------------------Optical Sensor----------------------")
         print("Light = " + str(round(lux,2)) + " Lux")
 
-
-
+        jb.buildFile()
         time.sleep(READING_DELAY)
-    
+        
     db.close()
-
+    
 main()

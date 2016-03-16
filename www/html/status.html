@@ -139,24 +139,47 @@
         // Calls the refresh data function every minute.
         var timer = refreshData(60000);
         
+        function hideAll() {
+            $("#tInfo").hide();
+            $("#pInfo").hide();
+            $("#hInfo").hide();
+            $("#lInfo").hide();
+        };
+        
         $("#temp").click(function() {
-            $("#tInfo").toggle();
+            if($("#tInfo").is(":visible")) {
+                $("#tInfo").hide();
+            } else {
+                hideAll();
+                $("#tInfo").toggle();
+            }
         });
         
         $("#pressure").click(function() {
-            $("#pInfo").toggle();
+            if($("#pInfo").is(":visible")) {
+                $("#pInfo").hide();
+            } else {
+                hideAll();
+                $("#pInfo").toggle();
+            }
         });
         
         $("#humid").click(function() {
-            $("#hInfo").toggle();
-        });
-        
-        $("#wind").click(function() {
-            $("#wInfo").toggle();
+            if($("#hInfo").is(":visible")) {
+                $("#hInfo").hide();
+            } else {
+                hideAll();
+                $("#hInfo").toggle();
+            }
         });
         
         $("#lux").click(function() {
-            $("#lInfo").toggle();
+            if($("#lInfo").is(":visible")) {
+                $("#lInfo").hide();
+            } else {
+                hideAll();
+                $("#lInfo").toggle();
+            }
         });
     </script>
 </body>
