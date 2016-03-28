@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
 DB_NAME = 'sensor_data.sqlite'
@@ -53,11 +53,12 @@ class DAO:
         data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS t WHERE t.time > ? ORDER BY t.time DESC LIMIT ?",
                                    (datetime.today().replace(hour=0,minute=0,second=0,microsecond=0) - timedelta(days=1),
                                     str(entries))).fetchall()
+        data.reverse()
         return data
 
     def get_hourly(self, table_name):
         last_day = datetime.today().replace(minute=0,second=0,microsecond=0) - timedelta(days=1)
-        data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS ir WHERE ir.time > ? ORDER BY ir.time ASC",
+        data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS t WHERE t.time > ? ORDER BY t.time ASC",
                                    (last_day,)).fetchall()
 
         hourly_data = []
@@ -78,6 +79,23 @@ class DAO:
         return hourly_data
 
     def get_daily(self, table_name):
-        pass
+        old_day = datetime.today().replace(hour=0,minute=0,second=0,microsecond=0)
+        date = []
+
+        daily_data = []
+        i = -1
+
+        for day in range(0,7):
+            data = self.cursor.execute("SELECT * FROM " + table_name.upper() + " AS t WHERE t.time > ?  AND t.time < ?ORDER BY t.time ASC",
+                                   (old_day ,old_day + timedelta(hours=(5 if i == 0 else 24)))).fetchall()
+            if len(data) > 0:
+                daily_data.append(data[i])
+
+            i=0
+            old_day = datetime.today().replace(hour=11,minute=0,second=0,microsecond=0) - timedelta(days=day + 1)
+
+        daily_data.reverse()
+        return daily_data
+
 
 
