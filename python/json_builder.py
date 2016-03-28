@@ -55,9 +55,3 @@ class JSONBuilder:
         data_file = '../www/html/json/current.json'
         f = open(data_file, 'w')
         f.write(j)
-        print(j)
-
-
-#for debugging
-jsonB = JSONBuilder(DAO("sensor_data.sqlite",False))
-jsonB.buildFile()

@@ -56,9 +56,9 @@ def main():
 
         db.close()      
 
-        db.open(False)
-        jb.buildFile()
-        db.close()
+        #db.open(False)
+        #jb.buildFile()
+        #db.close()
 
         time.sleep(READING_DELAY)
         
