@@ -96,6 +96,3 @@ class DAO:
 
         daily_data.reverse()
         return daily_data
-
-
-

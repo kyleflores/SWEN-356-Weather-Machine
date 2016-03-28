@@ -5,7 +5,7 @@ import time
 from dao import DAO
 from json_builder import JSONBuilder
 
-READING_DELAY = 55
+READING_DELAY = 15
 
 def main():
     st = SensorTag("")
@@ -56,9 +56,10 @@ def main():
 
         db.close()      
 
-        #db.open(False)
-        #jb.buildFile()
-        #db.close()
+        db.open(False)
+        jb.buildFile("current")
+        jb.buildFile("history")
+        db.close()
 
         time.sleep(READING_DELAY)
         
