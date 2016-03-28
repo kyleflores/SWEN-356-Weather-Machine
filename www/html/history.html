@@ -44,45 +44,192 @@
         </div>
     </nav>
 
+    
+
+    
     <div class="container" id="content">
         <h1>History</h1>
         <p class="lead">View the historical weather data associated with your device.</p>
         <div class="panel panel-default">
-            <div class="panel-heading">Weather History</div>
-
+            <ul class="nav nav-tabs">
+                <li class="nav-item" id="tempTab">
+                    <a class="nav-link" href="#tHist">Temperature</a>
+                </li>
+                <li class="nav-item" id="pressureTab">
+                    <a class="nav-link" href="#pHist">Pressure</a>
+                </li>
+                <li class="nav-item"  id="humidTab">
+                    <a class="nav-link" href="#hHist">Humidity</a>
+                </li>
+                <li class="nav-item" id="luxTab">
+                    <a class="nav-link" href="#lHist">Lux</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane" id="tHist">
+                    <table class=table>
+                        <thead>
+                            <th>Time</th> 
+                            <th>Value</th> 
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5:00</td>
+                                <td>500 degrees</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="pHist">
+                    <table class=table>
+                        <thead>
+                            <th>Time</th> 
+                            <th>Value</th> 
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5:00</td>
+                                <td>500 degrees</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="hHist">
+                    <table class=table>
+                        <thead>
+                            <th>Time</th> 
+                            <th>Value</th> 
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5:00</td>
+                                <td>500 degrees</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="lHist">
+                    <table class=table>
+                        <thead>
+                            <th>Time</th> 
+                            <th>Value</th> 
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>5:00</td>
+                                <td>500 degrees</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <!--  {% for data in Data %} -->
-            <table class=table> 
+            <!--<table class=table> 
                 <thead> 
                     <tr> 
                         <th>Data Type</th> 
                         <th>Value</th> 
                     </tr> 
                 </thead> 
-                    <tbody> 
-                        <tr id="temp"> 
-                            <td>Temperature</td> 
-                            <td id="tempData"></td>
-                        </tr> 
-                        <tr id="pressure"> 
-                            <td>Pressure</td>
-                            <td id="baroData"></td>
-                        </tr>
-                        <tr id="humid"> 
-                            <td>Humidity</td> 
-                            <td id="humidData"></td>
-                        </tr> 
-                        <tr id="lux"> 
-                            <td>Luxometer</td> 
-                            <td id="luxData"></td>
-                        </tr>
-                    </tbody> 
-            </table>
+                <tbody> 
+                    <tr id="temp"> 
+                        <td>Temperature</td> 
+                        <td id="tempData"></td>
+                        <div id="tInfo">
+                            <p>Temperature Suggestion</p>
+                        </div>
+                    </tr> 
+                    <tr id="pressure"> 
+                        <td>Pressure</td>
+                        <td id="baroData">
+                            <div id="pInfo">
+                                <p>Pressure Suggestion</p>
+                            </div>
+                        </td>
+                        
+                    </tr>
+                    <tr id="humid"> 
+                        <td>Humidity</td> 
+                        <td id="humidData"></td>
+                        <div id="hInfo">
+                            <p>Humidity Suggestion</p>
+                        </div>
+                    </tr> 
+                    <tr id="lux"> 
+                        <td>Luxometer</td> 
+                        <td id="luxData"></td>
+                        <div id="lInfo">
+                            <p>Lux Suggestion</p>
+                        </div>
+                    </tr>
+                </tbody> 
+            </table> -->
             <!-- {% endfor %} -->
-        </div>
     </div>
 
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "json/history.json",
+                dataType: "json",
+                success: function(data) {
+                    var weatherdata = data;
+
+                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
+                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
+                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
+                    $('#luxData').html(weatherdata.opti.light + " lux");
+                }
+            });
+        });
+        
+        // Once the timer runs out, grabs new data.
+        function refreshData(interval) {
+            return setInterval(grabData, interval);
+        }
+        
+        // Makes and AJAX call and refreshes the information on the page.
+        function grabData() {
+            $.ajax({
+                url: "json/history.json",
+                dataType: "json",
+                success: function(data) {
+                    var weatherdata = data;
+
+                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
+                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
+                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
+                    $('#luxData').html(weatherdata.opti.light + " lux");
+                }
+            });
+        }
+        
+        // Calls the refresh data function every minute.
+        var timer = refreshData(60000);
+        
+        $('#tempTab a').click(function (e) {
+          e.preventDefault()
+          $(this).tab('show')
+        });
+        
+        $('#pressureTab a').click(function (e) {
+          e.preventDefault()
+          $(this).tab('show')
+        });
+        
+        $('#humidTab a').click(function (e) {
+          e.preventDefault()
+          $(this).tab('show')
+        });
+        
+        $('#luxTab a').click(function (e) {
+          e.preventDefault()
+          $(this).tab('show')
+        });
+    </script>
 </body>
 </html>
