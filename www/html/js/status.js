@@ -13,6 +13,9 @@ $(document).ready(function () {
             $('#baroData').html(weatherdata.baro.pressure + " hPa");
             $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
             $('#luxData').html(weatherdata.opti.light + " lux");
+
+            // Calls the refresh data function every minute.
+            refreshData(60000);
         }
     });
 });
@@ -39,10 +42,8 @@ function refreshData(interval) {
     return setInterval(grabData, interval);
 }
 
-// Calls the refresh data function every minute.
-var timer = refreshData(60000);
 
-
+// Main Contents
 function hideAll() {
     $("#tInfo").hide();
     $("#pInfo").hide();

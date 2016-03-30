@@ -1,12 +1,12 @@
 $(document).ready(function () {
     // Grab Data
-    grabData("#tHist", "temp");
-    grabData("#pHist", "baro");
-    grabData("#hHist", "humid");
-    grabData("#lHist", "lux");
+    getAllData();
 
     // Show first tab
     $('#tempTab a:first').tab('show');
+
+    // Calls the refresh data function every minute.
+    refreshData(60000);
 });
 
 
@@ -54,15 +54,24 @@ function grabData(table, type) {
     });
 }
 
-// Once the timer runs out, grabs new data.
-function refreshData(interval) {
-    return setInterval(grabData, interval);
+function getAllData() {
+    $("#tHist tbody").empty();
+    $("#pHist tbody").empty();
+    $("#hHist tbody").empty();
+    $("#lHist tbody").empty();
+    grabData("#tHist", "temp");
+    grabData("#pHist", "baro");
+    grabData("#hHist", "humid");
+    grabData("#lHist", "lux");
 }
 
-// Calls the refresh data function every minute.
-var timer = refreshData(60000);
+// Once the timer runs out, grabs new data.
+function refreshData(interval) {
+    setInterval(getAllData, interval)
+}
 
 
+// Main Contents
 $('#tempTab a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
