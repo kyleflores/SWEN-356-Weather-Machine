@@ -1,93 +1,123 @@
-$(document).ready(function () {
-    // Grab Data
-    getAllData();
+var currType;
 
+$(document).ready(function () {
     // Show first tab
-    $('#tempTab a:first').tab('show');
+    $('#tempTab a').click();
 
     // Calls the refresh data function every minute.
     refreshData(60000);
 });
 
 
+// Draw chart from data given by using HighCharts
+function drawChart(dataObject) {
+    var dataList = [];
+    var timeList = [];
+    $.each(dataObject, function (index, item) {
+        var value;
+        if (currType == "Temperature") {
+            value = item.ambtemp;
+        } else if (currType == "Pressure") {
+            value = item.pressure;
+        } else if (currType == "Humidity") {
+            value = item.humidity;
+        } else if (currType == "Luxometer") {
+            value = item.light;
+        }
+        dataList.push(parseFloat(value));
+        timeList.push(item.time);
+    });
+
+    $("#dataContent").highcharts({
+        title: {
+            text: "",
+            x: -20 //center
+        },
+        xAxis: {
+            categories: timeList
+        },
+        yAxis: {
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '°C'
+        },
+        series: [{
+            name: 'data',
+            data: dataList
+        }]
+    });
+}
+
 // Makes and AJAX call and refreshes the information on the page.
-function grabData(table, type) {
+function grabData() {
     $.ajax({
         url: "json/history.json",
         dataType: "json",
         success: function (data) {
-            var dataObject;
-            var dataUnit;
-            var dataHtml = "";
-            if (type == "temp") {
-                dataObject = data.irtemp;
-                dataUnit = "&deg; Celcius";
-            } else if (type == "baro") {
-                dataObject = data.baro;
-                dataUnit = " hPa";
-            } else if (type == "humid") {
-                dataObject = data.humid;
-                dataUnit = "&#37 RH";
-            } else if (type == "lux") {
-                dataObject = data.opti;
-                dataUnit = " lux";
+            if (currType == "Temperature") {
+                drawChart(data.irtemp);
             }
-            $.each(dataObject, function (index, item) {
-                var value;
-                if (type == "temp") {
-                    value = item.ambtemp;
-                } else if (type == "baro") {
-                    value = item.pressure;
-                } else if (type == "humid") {
-                    value = item.humidity;
-                } else if (type == "lux") {
-                    value = item.light;
-                }
-                dataHtml += "<tr><td>" +
-                    item.time +
-                    "</td><td>" +
-                    value + dataUnit +
-                    "</td></tr>";
-            });
-            $(table + " tbody").append(dataHtml);
+            else if (currType == "Pressure") {
+                drawChart(data.baro);
+            }
+            else if (currType == "Humidity") {
+                drawChart(data.humid);
+            }
+            else if (currType == "Luxometer") {
+                drawChart(data.opti);
+            }
         }
     });
 }
 
-function getAllData() {
-    $("#tHist tbody").empty();
-    $("#pHist tbody").empty();
-    $("#hHist tbody").empty();
-    $("#lHist tbody").empty();
-    grabData("#tHist", "temp");
-    grabData("#pHist", "baro");
-    grabData("#hHist", "humid");
-    grabData("#lHist", "lux");
-}
-
-// Once the timer runs out, grabs new data.
+//Once the timer runs out, grabs new data.
 function refreshData(interval) {
-    setInterval(getAllData, interval)
+    setInterval(grabData, interval)
 }
 
 
 // Main Contents
 $('#tempTab a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
+    e.preventDefault();
+    if (currType == "Temperature") {
+        return
+    }
+    $(this).tab('show');
+    currType = "Temperature";
+    grabData();
 });
 
 $('#pressureTab a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
+    e.preventDefault();
+    if (currType == "Pressure") {
+        return
+    }
+    $(this).tab('show');
+    currType = "Pressure";
+    grabData();
 });
 
 $('#humidTab a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
+    e.preventDefault();
+    if (currType == "Humidity") {
+        return
+    }
+    $(this).tab('show');
+    currType = "Humidity";
+    grabData();
 });
 
 $('#luxTab a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
+    e.preventDefault();
+    if (currType == "Luxometer") {
+        return
+    }
+    $(this).tab('show');
+    currType = "Luxometer";
+    grabData();
 });
