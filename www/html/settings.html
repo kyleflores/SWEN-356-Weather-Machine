@@ -14,6 +14,16 @@
         #content {
             padding-top: 50px;
         }
+        
+        #newAlarmButton {
+            margin-top: 10px;
+        }
+        
+        #hourDropdown, #minuteDropdown, #meridiemDropdown {
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
     </style>
 </head>
 <body>
@@ -47,9 +57,58 @@
     <div class="container" id="content">
         <h1>Settings</h1>
         <p class="lead">Configure the various settings for the application here.</p>
+        
+        <div id="timeSection">
+            <p>
+                Have the application alert you at specified times.
+            </p>
+            <div class="timeAlarm" id="alarm1">
+                <select id="hourDropdown">
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                    <option value="3">03</option>
+                    <option value="4">04</option>
+                    <option value="5">05</option>
+                    <option value="6">06</option>
+                    <option value="7">07</option>
+                    <option value="8">08</option>
+                    <option value="9">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+
+                <select id="minuteDropdown">
+                    <option value="00">00</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                    <option value="50">50</option>
+                </select>
+
+                <select id="meridiemDropdown">
+                    <option value="morning">AM</option>
+                    <option value="evening">PM</option>
+                </select>
+            </div>
+        </div>
+        
+        <button type="button" id="newAlarmButton">New Alarm</button>
+
     </div>
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script>
+        // Keeps track of how many alarms you currently have.
+        var numAlarms = 1;
+        // When the new alarm button is clicked, the template for an alarm is copied and appended to the time section.
+        $("#newAlarmButton").click(function() {
+            numAlarms++;
+            var newID = "alarm" + numAlarms.toString();
+            $(".timeAlarm").last().clone().attr("id", newID).appendTo("#timeSection");                    
+        });
+    </script>
 </body>
 </html>
