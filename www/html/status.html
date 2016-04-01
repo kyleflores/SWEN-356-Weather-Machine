@@ -4,12 +4,12 @@
     <!-- Disables zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>The Weather Machine</title>
-    
+
     <!-- Bootstrap's CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <!-- Webpage Address Icon -->
-    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png" />
+    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png"/>
     <style>
         #content {
             padding-top: 50px;
@@ -17,170 +17,85 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="./index.html">The Weather Machine</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="./status.html">Status</a>
-                    </li>
-                    <li>
-                        <a href="./history.html">History</a>
-                    </li>
-                    <li>
-                        <a href="./settings.html">Settings</a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./index.html">The Weather Machine</a>
         </div>
-    </nav>
-
-    <div class="container" id="content">
-        <h1>Status</h1>
-        <p class="lead">Here you will see readouts of the various forms of weather data.</p>
-        <div class="panel panel-default">
-            <div class="panel-heading">Weather Data</div>
-            
-            <!--  {% for data in Data %} -->
-            <table class=table> 
-                <thead> 
-                    <tr> 
-                        <th>Data Type</th> 
-                        <th>Value</th> 
-                    </tr> 
-                </thead> 
-                <tbody> 
-                    <tr id="temp"> 
-                        <td>Temperature</td> 
-                        <td id="tempData"></td>
-                        <div id="tInfo">
-                            <p>Temperature Suggestion</p>
-                        </div>
-                    </tr> 
-                    <tr id="pressure"> 
-                        <td>Pressure</td>
-                        <td id="baroData"></td>
-                        <div id="pInfo">
-                            <p>Pressure Suggestion</p>
-                        </div>
-                    </tr>
-                    <tr id="humid"> 
-                        <td>Humidity</td> 
-                        <td id="humidData"></td>
-                        <div id="hInfo">
-                            <p>Humidity Suggestion</p>
-                        </div>
-                    </tr> 
-                    <tr id="lux"> 
-                        <td>Luxometer</td> 
-                        <td id="luxData"></td>
-                        <div id="lInfo">
-                            <p>Lux Suggestion</p>
-                        </div>
-                    </tr>
-                </tbody>  
-            </table>
-            <!-- {% endfor %} -->
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="./status.html">Status</a>
+                </li>
+                <li>
+                    <a href="./history.html">History</a>
+                </li>
+                <li>
+                    <a href="./settings.html">Settings</a>
+                </li>
+            </ul>
         </div>
     </div>
-    <!-- jQuery must be called first because Boostrap relies on it -->
-    <script src="js/jquery-1.12.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#tInfo").hide();
-            $("#pInfo").hide();
-            $("#hInfo").hide();
-            $("#lInfo").hide();
-            $.ajax({
-                url: "json/current.json",
-                dataType: "json",
-                success: function(data) {
-                    var weatherdata = data;
+</nav>
 
-                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
-                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
-                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
-                    $('#luxData').html(weatherdata.opti.light + " lux");
-                }
-            });
-        });
-        
-        // Once the timer runs out, grabs new data.
-        function refreshData(interval) {
-            return setInterval(grabData, interval);
-        }
-        
-        // Makes and AJAX call and refreshes the information on the page.
-        function grabData() {
-            $.ajax({
-                url: "json/current.json",
-                dataType: "json",
-                success: function(data) {
-                    var weatherdata = data;
+<div class="container" id="content">
+    <h1>Status</h1>
+    <p class="lead">Here you will see readouts of the various forms of weather data.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">Weather Data</div>
 
-                    $('#tempData').html(weatherdata.irtemp.ambtemp + "&deg;" + " Celsius");
-                    $('#baroData').html(weatherdata.baro.pressure + " hPa");
-                    $('#humidData').html(weatherdata.humid.humidity + "&#37;" + " RH");
-                    $('#luxData').html(weatherdata.opti.light + " lux");
-                }
-            });
-        }
-        
-        // Calls the refresh data function every minute.
-        var timer = refreshData(60000);
-        
-        function hideAll() {
-            $("#tInfo").hide();
-            $("#pInfo").hide();
-            $("#hInfo").hide();
-            $("#lInfo").hide();
-        };
-        
-        $("#temp").click(function() {
-            if($("#tInfo").is(":visible")) {
-                $("#tInfo").hide();
-            } else {
-                hideAll();
-                $("#tInfo").toggle();
-            }
-        });
-        
-        $("#pressure").click(function() {
-            if($("#pInfo").is(":visible")) {
-                $("#pInfo").hide();
-            } else {
-                hideAll();
-                $("#pInfo").toggle();
-            }
-        });
-        
-        $("#humid").click(function() {
-            if($("#hInfo").is(":visible")) {
-                $("#hInfo").hide();
-            } else {
-                hideAll();
-                $("#hInfo").toggle();
-            }
-        });
-        
-        $("#lux").click(function() {
-            if($("#lInfo").is(":visible")) {
-                $("#lInfo").hide();
-            } else {
-                hideAll();
-                $("#lInfo").toggle();
-            }
-        });
-    </script>
+        <!--  {% for data in Data %} -->
+        <table class=table>
+            <thead>
+            <tr>
+                <th>Data Type</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="temp">
+                <td>Temperature</td>
+                <td id="tempData"></td>
+                <div id="tInfo">
+                    <p>Temperature Suggestion</p>
+                </div>
+            </tr>
+            <tr id="pressure">
+                <td>Pressure</td>
+                <td id="baroData"></td>
+                <div id="pInfo">
+                    <p>Pressure Suggestion</p>
+                </div>
+            </tr>
+            <tr id="humid">
+                <td>Humidity</td>
+                <td id="humidData"></td>
+                <div id="hInfo">
+                    <p>Humidity Suggestion</p>
+                </div>
+            </tr>
+            <tr id="lux">
+                <td>Luxometer</td>
+                <td id="luxData"></td>
+                <div id="lInfo">
+                    <p>Lux Suggestion</p>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+        <!-- {% endfor %} -->
+    </div>
+</div>
+<!-- jQuery must be called first because Boostrap relies on it -->
+<script src="js/jquery-1.12.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/status.js"></script>
 </body>
 </html>

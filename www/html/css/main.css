@@ -2,8 +2,21 @@
     border-bottom: 5px solid indianred;
 }
 
-.navbar-inverse .navbar-nav>.active>a,
-.navbar-inverse .navbar-nav>.active>a:focus,
-.navbar-inverse .navbar-nav>.active>a:hover {
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
     background-color: indianred;
+}
+
+#historyContent .panel > .nav-tabs {
+    border-bottom: none;
+}
+
+#historyContent .nav-item {
+    border-bottom: none;
+}
+
+#historyContent .tab-content#dataContent {
+    padding-top: 40px;
+    border: 1px solid #ddd;
 }
