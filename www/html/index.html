@@ -63,15 +63,15 @@
         $(document).ready(function() {
             $("#prInfo").hide();
             $.ajax({
-                url: "json/history.json",
+                url: "json/current.json",
                 dataType: "json",
                 success: function(data) {
                     var weatherdata = data;
-                    var irINT = parseFloat(weatherdata.irtemp[0].objtemp)
-                    var humidINT = parseFloat(weatherdata.humid[0].humidity)
-                    var baroINT = parseFloat(weatherdata.baro[0].pressure)
-                    
-                    var precipChance = (irINT-50)/irINT + (humidINT-50)/humidINT + (baroINT-500)/baroINT
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    // formula to determine precip chance below
+                    var precipChance = irINT/60 + humidINT/60 + baroINT/500                    
                     
                     $('#prData').html(precipChance + "%");
                 }
@@ -86,16 +86,15 @@
         // Makes and AJAX call and refreshes the information on the page.
         function grabData() {
             $.ajax({
-                url: "json/history.json",
+                url: "json/current.json",
                 dataType: "json",
                 success: function(data) {
                     var weatherdata = data;
-                    var irINT = parseFloat(weatherdata.irtemp[0].objtemp)
-                    var humidINT = parseFloat(weatherdata.humid[0].humidity)
-                    var baroINT = parseFloat(weatherdata.baro[0].pressure)
-                    // formula to determine precip chance below
-                    var precipChance = (irINT-50)/irINT + (humidINT-50)/humidINT + (baroINT-500)/baroINT
-                    
+                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                    var humidINT = parseFloat(weatherdata.humid.humidity)
+                    var baroINT = parseFloat(weatherdata.baro.pressure)
+                    // formula to determine precip chance below    
+                    var precipChance = irINT/60 + humidINT/60 + baroINT/500                   
                     $('#prData').html(precipChance + "%");
                 }
             });
