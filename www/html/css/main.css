@@ -8,6 +8,10 @@
     background-color: indianred;
 }
 
+#historyContent {
+    padding-top: 50px;
+}
+
 #historyContent .panel > .nav-tabs {
     border-bottom: none;
 }
@@ -17,6 +21,6 @@
 }
 
 #historyContent .tab-content#dataContent {
-    padding-top: 40px;
+    padding-top: 20px;
     border: 1px solid #ddd;
 }
