@@ -4,12 +4,12 @@
     <!-- Disables zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>The Weather Machine</title>
-    
+
     <!-- Bootstrap's CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <!-- Webpage Address Icon -->
-    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png" />
+    <link rel="shortcut icon" href="https://cdn1.iconfinder.com/data/icons/hawcons/32/698868-icon-132-cloud-128.png"/>
     <style>
         #content {
             padding-top: 50px;
@@ -17,96 +17,101 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="./index.html">The Weather Machine</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="./status.html">Status</a>
-                    </li>
-                    <li>
-                        <a href="./history.html">History</a>
-                    </li>
-                    <li>
-                        <a href="./settings.html">Settings</a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./index.html">The Weather Machine</a>
         </div>
-    </nav>
-
-    <div class="container" id="content">
-            <h1>Welcome to The Weather Machine</h1>
-            <p class="lead">
-                    This app will display accurate weather data from right outside your home.
-            </p>
-            <body id="precip">
-                <body><b>Chance of Precipitation</b></body>
-                <div id="prInfo">
-                    <p id="prData"></p>
-                </div>  
-            </body>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="./status.html">Status</a>
+                </li>
+                <li>
+                    <a href="./history.html">History</a>
+                </li>
+                <li>
+                    <a href="./settings.html">Settings</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <!-- jQuery must be called first because Boostrap relies on it -->
-    <script src="js/jquery-1.12.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#prInfo").hide();
-            $.ajax({
-                url: "json/current.json",
-                dataType: "json",
-                success: function(data) {
-                    var weatherdata = data;
-                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
-                    var humidINT = parseFloat(weatherdata.humid.humidity)
-                    var baroINT = parseFloat(weatherdata.baro.pressure)
-                    // formula to determine precip chance below
-                    var precipChance = irINT/60 + humidINT/60 + baroINT/500                    
-                    
-                    $('#prData').html(precipChance + "%");
-                }
-            });
+</nav>
+
+<div class="container" id="content">
+    <h1>Welcome to The Weather Machine</h1>
+    <p class="lead">
+        This app will display accurate weather data from right outside your home.
+    </p>
+    <div id="precip">
+        <div><b>Chance of Precipitation</b></div>
+        <div id="prInfo">
+            <p id="prData"></p>
+        </div>
+    </div>
+    <div>
+        <button onclick="notifyMe('t', 't')">Notify me!</button>
+    </div>
+</div>
+
+<!-- jQuery must be called first because Boostrap relies on it -->
+<script src="js/jquery-1.12.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#prInfo").hide();
+        $.ajax({
+            url: "json/current.json",
+            dataType: "json",
+            success: function (data) {
+                var weatherdata = data;
+                var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                var humidINT = parseFloat(weatherdata.humid.humidity)
+                var baroINT = parseFloat(weatherdata.baro.pressure)
+                // formula to determine precip chance below
+                var precipChance = irINT / 60 + humidINT / 60 + baroINT / 500
+
+                $('#prData').html(precipChance + "%");
+            }
         });
-        
-        // Once the timer runs out, grabs new data.
-        function refreshData(interval) {
-            return setInterval(grabData, interval);
-        }
-        
-        // Makes and AJAX call and refreshes the information on the page.
-        function grabData() {
-            $.ajax({
-                url: "json/current.json",
-                dataType: "json",
-                success: function(data) {
-                    var weatherdata = data;
-                    var irINT = parseFloat(weatherdata.irtemp.objtemp)
-                    var humidINT = parseFloat(weatherdata.humid.humidity)
-                    var baroINT = parseFloat(weatherdata.baro.pressure)
-                    // formula to determine precip chance below    
-                    var precipChance = irINT/60 + humidINT/60 + baroINT/500                   
-                    $('#prData').html(precipChance + "%");
-                }
-            });
-        }
-        
-        // Calls the refresh data function every minute.
-        var timer = refreshData(60000);
-        
-        $("#precip").click(function() {
-            $("#prInfo").toggle();
+    });
+
+    // Once the timer runs out, grabs new data.
+    function refreshData(interval) {
+        return setInterval(grabData, interval);
+    }
+
+    // Makes and AJAX call and refreshes the information on the page.
+    function grabData() {
+        $.ajax({
+            url: "json/current.json",
+            dataType: "json",
+            success: function (data) {
+                var weatherdata = data;
+                var irINT = parseFloat(weatherdata.irtemp.objtemp)
+                var humidINT = parseFloat(weatherdata.humid.humidity)
+                var baroINT = parseFloat(weatherdata.baro.pressure)
+                // formula to determine precip chance below
+                var precipChance = irINT / 60 + humidINT / 60 + baroINT / 500
+                $('#prData').html(precipChance + "%");
+            }
         });
-        
-    </script>
+    }
+
+    // Calls the refresh data function every minute.
+    var timer = refreshData(60000);
+
+    $("#precip").click(function () {
+        $("#prInfo").toggle();
+    });
+</script>
+<script src="js/notifications.js"></script>
 </body>
 </html>
