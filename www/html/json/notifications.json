@@ -1,16 +1,17 @@
 {
-  "notifications": {
     "0": {
-      "time": "2016-03-18 03:25:23.000000",
-      "title": "Test Notification",
-      "message": "There's a storm coming",
-      "threshold": "high"
+        "id": "alarm0",
+        "time": "2016-03-18 03:25:23.000000",
+        "priority": "Medium"
     },
     "1": {
-      "time": "2016-03-18 03:25:23.000000",
-      "title": "Test Notification",
-      "message": "There's a lot of ice today",
-      "threshold": "medium"
+        "id": "alarm1",
+        "time": "2016-03-31 01:00:15.131953",
+        "priority": "Low"
+    },
+    "2": {
+        "id": "alarm2",
+        "time": "2016-04-01 01:00:15.131953",
+        "priority": "High"
     }
-  }
 }

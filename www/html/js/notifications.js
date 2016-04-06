@@ -5,18 +5,18 @@ document.addEventListener('DOMContentLoaded', function () {
     $.ajax({
         url: "json/notifications.json",
         dataType: "json",
-        success: function (raw) {
-            console.log(raw.notifications);
-            $.each(raw.notifications, function (index, noti) {
+        success: function (data) {
+            console.log(data);
+            $.each(data, function (index, noti) {
                 notiHtml = "<li class='list-group-item list-group-item-"
-                if (noti.threshold.toLowerCase() == "high") {
+                if (noti.priority.toLowerCase() == "high") {
                     notiHtml += "danger'>";
-                } else if (noti.threshold.toLowerCase() == "medium") {
+                } else if (noti.priority.toLowerCase() == "medium") {
                     notiHtml += "warning'>";
-                } else if (noti.threshold.toLowerCase() == "low") {
+                } else if (noti.priority.toLowerCase() == "low") {
                     notiHtml += "info'>";
                 }
-                notiHtml += noti.message + "</li>";
+                notiHtml += noti.id + "</li>";
 
                 $("#notificationList").append(notiHtml);
             });

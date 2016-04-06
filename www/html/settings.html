@@ -15,15 +15,28 @@
             padding-top: 50px;
         }
         
-        #newAlarmButton {
-            margin-top: 10px;
+        #newAlarmButton, #saveAlarmsButton {
+            margin: 10px 10px 0 0;
+            
         }
         
-        #hourDropdown, #minuteDropdown, #meridiemDropdown {
+        #hourDropdown, #minuteDropdown, #meridiemDropdown, #priorityDropdown {
             padding: 5px;
             margin-bottom: 10px;
             border-radius: 3px;
         }
+        
+        #timeBlock {
+            float: left;
+            padding-right: 50px;
+        }
+        
+        hr {
+            margin: 5px 0 10px 0;
+            border-color: #bfbfbf;
+            width: 500px;
+        }
+
     </style>
 </head>
 <body>
@@ -62,39 +75,54 @@
             <p>
                 Have the application alert you at specified times.
             </p>
-            <div class="timeAlarm" id="alarm1">
-                <select id="hourDropdown">
-                    <option value="1">01</option>
-                    <option value="2">02</option>
-                    <option value="3">03</option>
-                    <option value="4">04</option>
-                    <option value="5">05</option>
-                    <option value="6">06</option>
-                    <option value="7">07</option>
-                    <option value="8">08</option>
-                    <option value="9">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                </select>
+            <div class="timeAlarm" id="alarm0">
+                <hr>
+                <div id="timeBlock">
+                    <p>Time</p>
+                    <select id="hourDropdown">
+                        <option value="1">01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="4">04</option>
+                        <option value="5">05</option>
+                        <option value="6">06</option>
+                        <option value="7">07</option>
+                        <option value="8">08</option>
+                        <option value="9">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
 
-                <select id="minuteDropdown">
-                    <option value="00">00</option>
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                    <option value="50">50</option>
-                </select>
+                    <select id="minuteDropdown">
+                        <option value="00">00</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
+                    </select>
 
-                <select id="meridiemDropdown">
-                    <option value="morning">AM</option>
-                    <option value="evening">PM</option>
-                </select>
+                    <select id="meridiemDropdown">
+                        <option value="morning">AM</option>
+                        <option value="evening">PM</option>
+                    </select>
+                </div>
+                
+                <div id="priorityBlock">
+                    <p>Priority Threshold</p>
+                    <select id="priorityDropdown">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <hr>
             </div>
         </div>
         
-        <button type="button" id="newAlarmButton">New Alarm</button>
+        <button type="button" id="newAlarmButton">Add Alarm</button>
+        <button type="button" id="saveAlarmsButton">Save</button>
 
     </div>
     <!-- jQuery must be called first because Boostrap relies on it -->
@@ -108,6 +136,13 @@
             numAlarms++;
             var newID = "alarm" + numAlarms.toString();
             $(".timeAlarm").last().clone().attr("id", newID).appendTo("#timeSection");                    
+        });
+        
+        $("#saveAlarmsButton").click(function() {
+            for(var i=0; i < numAlarms; i++) {
+                var currentID = "#alarm" + i.toString();
+                
+            }
         });
     </script>
 </body>
