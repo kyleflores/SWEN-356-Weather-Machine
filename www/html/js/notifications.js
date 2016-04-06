@@ -2,6 +2,27 @@ var notiList = [];
 
 // request permission on page load
 document.addEventListener('DOMContentLoaded', function () {
+    $.ajax({
+        url: "json/notifications.json",
+        dataType: "json",
+        success: function (raw) {
+            console.log(raw.notifications);
+            $.each(raw.notifications, function (index, noti) {
+                notiHtml = "<li class='list-group-item list-group-item-"
+                if (noti.threshold.toLowerCase() == "high") {
+                    notiHtml += "danger'>";
+                } else if (noti.threshold.toLowerCase() == "medium") {
+                    notiHtml += "warning'>";
+                } else if (noti.threshold.toLowerCase() == "low") {
+                    notiHtml += "info'>";
+                }
+                notiHtml += noti.message + "</li>";
+
+                $("#notificationList").append(notiHtml);
+            });
+        }
+    });
+
     // animate if notification is not empty
     if (notiList.length != 0) {
 
