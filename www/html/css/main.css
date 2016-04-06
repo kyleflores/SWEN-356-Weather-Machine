@@ -8,6 +8,13 @@
     background-color: indianred;
 }
 
+
+/* Home */
+.panel-heading {
+    cursor: pointer;
+}
+
+/* History */
 #historyContent {
     padding-top: 50px;
 }

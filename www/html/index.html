@@ -50,14 +50,39 @@
     <p class="lead">
         This app will display accurate weather data from right outside your home.
     </p>
-    <div id="precip">
-        <div><b>Chance of Precipitation</b></div>
-        <div id="prInfo">
-            <p id="prData"></p>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne"
+                 role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                 aria-expanded="true" aria-controls="collapseOne">
+                <h4 class="panel-title">
+                    Chance of Precipitation
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body" id="precip">
+                    <div id="prInfo">
+                        <p id="prData"></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div>
-        <button onclick="notifyMe('t', 't')">Notify me!</button>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo"
+                 role="button" data-toggle="collapse" data-parent="#accordion"
+                 href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                 onclick="readNotifications()">
+                <h4 class="panel-title collapsed">
+                    Notifications
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <button onclick="notifyMe('t', 't')">Notify me!</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -66,7 +91,6 @@
 <script src="js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#prInfo").hide();
         $.ajax({
             url: "json/current.json",
             dataType: "json",
@@ -79,6 +103,7 @@
                 var precipChance = irINT / 60 + humidINT / 60 + baroINT / 500
 
                 $('#prData').html(precipChance + "%");
+                refreshData(60000);
             }
         });
     });
@@ -107,10 +132,6 @@
 
     // Calls the refresh data function every minute.
     var timer = refreshData(60000);
-
-    $("#precip").click(function () {
-        $("#prInfo").toggle();
-    });
 </script>
 <script src="js/notifications.js"></script>
 </body>
