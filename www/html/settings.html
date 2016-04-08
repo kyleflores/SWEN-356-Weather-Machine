@@ -80,27 +80,27 @@
                 <div id="timeBlock">
                     <p>Time</p>
                     <select id="hourDropdown">
-                        <option value="1">01</option>
-                        <option value="2">02</option>
-                        <option value="3">03</option>
-                        <option value="4">04</option>
-                        <option value="5">05</option>
-                        <option value="6">06</option>
-                        <option value="7">07</option>
-                        <option value="8">08</option>
-                        <option value="9">09</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
+                        <option value=1>01</option>
+                        <option value=2>02</option>
+                        <option value=3>03</option>
+                        <option value=4>04</option>
+                        <option value=5>05</option>
+                        <option value=6>06</option>
+                        <option value=7>07</option>
+                        <option value=8>08</option>
+                        <option value=9>09</option>
+                        <option value=10>10</option>
+                        <option value=11>11</option>
+                        <option value=12>12</option>
                     </select>
 
                     <select id="minuteDropdown">
-                        <option value="00">00</option>
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
+                        <option value=00>00</option>
+                        <option value=10>10</option>
+                        <option value=20>20</option>
+                        <option value=30>30</option>
+                        <option value=40>40</option>
+                        <option value=50>50</option>
                     </select>
 
                     <select id="meridiemDropdown">
@@ -139,10 +139,38 @@
         });
         
         $("#saveAlarmsButton").click(function() {
-            for(var i=0; i < numAlarms; i++) {
-                var currentID = "#alarm" + i.toString();
+            var currentAlarm = 0;
+            $('.timeAlarm').each(function(i, obj) {
                 
-            }
+                var currentID = "#alarm" + currentAlarm.toString();
+                // Changes and orders the ids, to that there are no gaps inbetween, like when someone deletes one.
+                $(this).attr("id", currentID);
+                //console.log($(this).attr("id"));
+                // Increment the alarm number.
+                currentAlarm++;
+            
+                // Grabs the values for hour, minute, and meridiem.
+                var hour = $(this).children("#timeBlock").children("#hourDropdown").val();
+                var minute = $(this).children("#timeBlock").children("#minuteDropdown").val();
+                var meridiem = $(this).children("#timeBlock").children("#meridiemDropdown").val();
+                
+                // Translates the hour if it happens in the afternoon, disregards 00 at PM.
+                if(meridiem == "evening") {
+                    if(hour > 0) {
+                        hour += 12;
+                    } 
+                }
+                
+                // Now make the datetime variable.
+                /*
+                var d = new Date();
+                d.setHours(hour);
+                d.setMinutes(minute);
+                d.setSeconds(0);
+                */
+                var alarmDate = hour.toString() * ":" + minute.toString() + ":00";
+                console.log(alarmDate);
+            });
         });
     </script>
 </body>
