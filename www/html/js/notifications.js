@@ -24,13 +24,14 @@ function grabNotifications() {
         url: "json/notifications.json",
         dataType: "json",
         success: function (data) {
-            var newList = [];
             if (currList.length == 0) {
                 $.each(data, function (index, noti) {
                     currList.push(noti);
                 });
             }
+
             // make a temp list to check which notifications are unread
+            var newList = [];
             $.each(data, function (index, noti) {
                 newList.push(noti);
             });
@@ -57,7 +58,7 @@ function grabNotifications() {
                     }
                 }
             }
-            // remove if null
+            // remove if not new
             unreadNoti = newList.filter(function (element) {
                 return element != null;
             });
