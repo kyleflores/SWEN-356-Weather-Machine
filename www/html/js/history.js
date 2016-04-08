@@ -103,7 +103,7 @@ function grabData() {
     });
 }
 
-//Once the timer runs out, grabs new data.
+// Once the timer runs out, grabs new data.
 function refreshData(interval) {
     setInterval(grabData, interval)
 }
