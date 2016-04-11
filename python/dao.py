@@ -19,7 +19,10 @@ class DAO:
             self.connection.commit()
 
     def open(self, saving):
-        self.connection = sqlite3.connect(self.file_name)
+        if not saving:
+            self.connection = sqlite3.connect("file:" + self.file_name + "?mode=ro",uri=True)
+        else:
+            self.connection = sqlite3.connect(self.file_name)
         self.cursor = self.connection.cursor()
         self.saving = saving
 
