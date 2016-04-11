@@ -80,27 +80,27 @@
                 <div id="timeBlock">
                     <p>Time</p>
                     <select id="hourDropdown">
-                        <option value=1>01</option>
-                        <option value=2>02</option>
-                        <option value=3>03</option>
-                        <option value=4>04</option>
-                        <option value=5>05</option>
-                        <option value=6>06</option>
-                        <option value=7>07</option>
-                        <option value=8>08</option>
-                        <option value=9>09</option>
-                        <option value=10>10</option>
-                        <option value=11>11</option>
-                        <option value=12>12</option>
+                        <option value="1">01</option>
+                        <option value="2">02</option>
+                        <option value="3">03</option>
+                        <option value="4">04</option>
+                        <option value="5">05</option>
+                        <option value="6">06</option>
+                        <option value="7">07</option>
+                        <option value="8">08</option>
+                        <option value="9">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
                     </select>
 
                     <select id="minuteDropdown">
-                        <option value=00>00</option>
-                        <option value=10>10</option>
-                        <option value=20>20</option>
-                        <option value=30>30</option>
-                        <option value=40>40</option>
-                        <option value=50>50</option>
+                        <option value="00">00</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                        <option value="50">50</option>
                     </select>
 
                     <select id="meridiemDropdown">
@@ -129,6 +129,17 @@
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
+        $.ajax({
+            url: "json/alarms.json",
+            dataType: "json",
+            success: function(data) {
+                jsonAlarms = data;
+            },
+            error: function() {
+                console.log("Error loading the JSON file.");
+            } 
+        });
+        
         // Keeps track of how many alarms you currently have.
         var numAlarms = 1;
         // When the new alarm button is clicked, the template for an alarm is copied and appended to the time section.
@@ -140,8 +151,9 @@
         
         $("#saveAlarmsButton").click(function() {
             var currentAlarm = 0;
+            var temp = new Array();
             $('.timeAlarm').each(function(i, obj) {
-                
+                var alarm = new Object();
                 var currentID = "#alarm" + currentAlarm.toString();
                 // Changes and orders the ids, to that there are no gaps inbetween, like when someone deletes one.
                 $(this).attr("id", currentID);
@@ -154,23 +166,39 @@
                 var minute = $(this).children("#timeBlock").children("#minuteDropdown").val();
                 var meridiem = $(this).children("#timeBlock").children("#meridiemDropdown").val();
                 
+                // Turns the hour variable into an int so it can be manipulated.
+                hour = parseInt(hour);
+                
                 // Translates the hour if it happens in the afternoon, disregards 00 at PM.
-                if(meridiem == "evening") {
-                    if(hour > 0) {
-                        hour += 12;
-                    } 
+                if(meridiem == "evening" && hour < 12) {
+                    hour += 12;
+                } else if(meridiem == "morning" && hour == 12) {
+                    hour = 0;
                 }
                 
-                // Now make the datetime variable.
-                /*
-                var d = new Date();
-                d.setHours(hour);
-                d.setMinutes(minute);
-                d.setSeconds(0);
-                */
-                var alarmDate = hour.toString() * ":" + minute.toString() + ":00";
-                console.log(alarmDate);
+                // Forms the basis of the datetime variable.
+                var alarmDate = hour.toString() + ":" + minute.toString() + ":00";
+                
+                alarm.id = currentID;
+                alarm.time = alarmDate;
+                alarm.priority = $(this).children("#priorityBlock").children("#priorityDropdown").val();
+                
+                temp.push({
+                    alarm
+                });
             });
+            jsonAlarms = JSON.stringify(temp);
+            console.log(jsonAlarms);
+            
+            $.ajax({
+                type: "POST",
+                dataType : 'json',
+                url: 'php/writeJson.php',
+                data: { data: jsonAlarms },
+                success: function () {console.log("Hi") }
+            });
+            
+            
         });
     </script>
 </body>
