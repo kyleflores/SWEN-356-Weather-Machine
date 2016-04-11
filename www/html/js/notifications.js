@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     grabNotifications();
 
     // Calls the refresh data function every minute.
-    refreshData(5000);
+    refreshData(60000);
 
     // Animate accordion if notification list is not empty
     if (currList.length != 0) {
@@ -50,7 +50,7 @@ function grabNotifications() {
                 $("#notificationList").append(notiHtml);
             }
 
-            // check if notification is new or not
+            // remove if notification isn't new
             for (i in newList) {
                 if (currList[i]) {
                     if (currList[i].id == newList[i].id) {
@@ -58,7 +58,6 @@ function grabNotifications() {
                     }
                 }
             }
-            // remove if not new
             newList = newList.filter(function (element) {
                 return element != null;
             });
@@ -70,7 +69,7 @@ function grabNotifications() {
                     notifyMe("title", newList[i].id)
                 }
             }
-            
+
             // display number of notifications unread
             unreadNoti = newList;
             if (unreadNoti.length > 0) {
