@@ -5,10 +5,10 @@ import time
 from dao import DAO
 from json_builder import JSONBuilder
 
-READING_DELAY = 15
+READING_DELAY = 40
 
 def main():
-    st = SensorTag("B0:B4:48:C9:B9:03")
+    st = SensorTag("B0:B4:48:C9:99:06")
 
     if not st.connected:
         print("Could not connect to sensortag")
