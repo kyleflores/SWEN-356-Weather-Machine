@@ -35,7 +35,7 @@ function grabNotifications() {
             $.each(data, function (index, noti) {
                 newList.push(noti);
             });
-            for (i = 0; i < newList.length; i++) {
+            for (i in newList) {
                 noti = newList[i];
                 notiHtml = "<li class='list-group-item list-group-item-"
                 if (noti.priority.toLowerCase() == "high") {
@@ -51,19 +51,28 @@ function grabNotifications() {
             }
 
             // check if notification is new or not
-            for (j = 0; j < newList.length; j++) {
-                if (currList[j]) {
-                    if (currList[j].id == newList[j].id) {
-                        newList.splice(j, 1, null);
+            for (i in newList) {
+                if (currList[i]) {
+                    if (currList[i].id == newList[i].id) {
+                        newList.splice(i, 1, null);
                     }
                 }
             }
             // remove if not new
-            unreadNoti = newList.filter(function (element) {
+            newList = newList.filter(function (element) {
                 return element != null;
             });
+
+            // check if already in unreadList; else notify
+            for (i in newList) {
+                if (!unreadNoti[i]) {
+                    console.log("notify " + newList[i].id)
+                    notifyMe("title", newList[i].id)
+                }
+            }
+            
             // display number of notifications unread
-            console.log(unreadNoti);
+            unreadNoti = newList;
             if (unreadNoti.length > 0) {
                 $("#notiNum").html('<span class="badge">' +
                     unreadNoti.length +
