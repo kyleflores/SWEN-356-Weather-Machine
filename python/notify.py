@@ -10,12 +10,6 @@ EMERGENCY = 3
 
 NOTIFICATIONS_DATABASE = "notifications.sqlite"
 
-'''NOTIFICATION_FUNCTIONS = {
-    LOW: low_notifications,
-    MED: med_notifications,
-    HIGH: high_notifications,
-    EMERGENCY: emergency_notifications}'''
-
 def generate_notification(threshold):
     notifications_db = sqlite3.connect(NOTIFICATIONS_DATABASE)
     notifications_db_cur = notifications_db.cursor()
@@ -24,14 +18,16 @@ def generate_notification(threshold):
     
     notifications = []
     
-    for i in range(threshold,HIGH + 1): 
-        for notification in NOTIFCATION_FUNCTIONS[i](sensor_data_db):
-            notifications_db_cur.execute(
-                "INSERT INTO NOTIFICATIONS (time,importance,message,viewed) VALUES (?,?,?,?)",
-                datetime.now(),i,notification,False)
+    for notification in NOTIFICATION_FUNCTIONS[threshold](sensor_data_db):
+        print("Added notification:\nTime: " + str(datetime.now()) + 
+                "\nImportance: " + str(threshold) + 
+                "\nMessage: " + notification)
+        notifications_db_cur.execute(
+            "INSERT INTO NOTIFICATIONS (time,importance,message,viewed) VALUES (?,?,?,?)",
+            (datetime.now(),threshold,notification,False))
 
     notifications_db.commit()
-    notifcations_db.close()
+    notifications_db.close()
 
 '''
 These fucntions generate notifcations of their respective importance
@@ -92,7 +88,7 @@ def main():
     if not len(sys.argv) == 2:
         print("Incorrect number of arguments")
 
-    theshold = int(sys.argv[1])
+    threshold = int(sys.argv[1])
 
     generate_notification(threshold)
 
