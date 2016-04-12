@@ -187,15 +187,18 @@
                     alarm
                 });
             });
-            jsonAlarms = JSON.stringify(temp);
-            console.log(jsonAlarms);
-            
-            $.ajax({
-                type: "POST",
-                dataType : 'json',
-                url: 'php/writeJson.php',
-                data: { data: jsonAlarms },
-                success: function () {console.log("Hi") }
+
+            // Pass the newly formed JavaScript object array to a php file so it can be written to the JSON file.
+            $.ajax({  
+                type: "POST",  
+                url: "php/writeJson.php", 
+                data: { data: JSON.stringify(temp) },
+                success: function() {
+                    console.log("Good job");
+                },
+                error: function() {
+                    console.log("You screwed up")
+                }
             });
             
             
