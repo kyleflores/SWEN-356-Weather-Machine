@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     grabNotifications();
 
     // Calls the refresh data function every minute.
-    refreshData(60000);
+    refreshData(5000);
 
     // Animate accordion if notification list is not empty
     if (currList.length != 0) {
@@ -45,7 +45,7 @@ function grabNotifications() {
                 } else if (noti.priority.toLowerCase() == "low") {
                     notiHtml += "success'>";
                 }
-                notiHtml += noti.id + "</li>";
+                notiHtml += noti.message + "</li>";
 
                 $("#notificationList").append(notiHtml);
             }
@@ -65,8 +65,8 @@ function grabNotifications() {
             // check if already in unreadList; else notify
             for (i in newList) {
                 if (!unreadNoti[i]) {
-                    console.log("notify " + newList[i].id)
-                    notifyMe("title", newList[i].id)
+                    console.log("notify " + newList[i].message)
+                    notifyMe("title", newList[i].message)
                 }
             }
 
@@ -108,7 +108,7 @@ function notifyMe(messageTitle, messageBody) {
     else {
         notification = new Notification('Notification title', {
             icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
-            body: "Hey there! You've been notified!"
+            body: messageBody
         });
         setTimeout(notification.close.bind(notification), 3000);
 
