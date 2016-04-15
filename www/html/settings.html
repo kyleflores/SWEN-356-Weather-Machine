@@ -128,25 +128,50 @@
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="json/alarms.json"></script>
     <script>
-        $.ajax({
-            url: "json/alarms.json",
-            dataType: "json",
-            success: function(data) {
-                jsonAlarms = data;
-            },
-            error: function() {
-                console.log("Error loading the JSON file.");
-            } 
-        });
-        
         // Keeps track of how many alarms you currently have.
-        var numAlarms = 1;
-        // When the new alarm button is clicked, the template for an alarm is copied and appended to the time section.
-        $("#newAlarmButton").click(function() {
+        var numAlarms = 0;
+        
+        $(document).ready(function() {
+            $.ajax({
+                url: "json/alarms.json",
+                dataType: "json",
+                success: function(data) {
+                    var alarms = data;
+                    
+                    // Tracks the current id of the html form structure we are working with.
+                    var currentID;
+                    // For each alarm element in the JSON file, the data will be taken from it and stored in the dropdown forms.
+                    for(var i=0; i < data.length; i++) { 
+                        currentID = "#alarm" + numAlarms.toString();
+                        $(currentID).children("#timeBlock").children("#hourDropdown").val(alarms[i].alarm.hour.toString());
+                        $(currentID).children("#timeBlock").children("#minuteDropdown").val(alarms[i].alarm.minute.toString());
+                        $(currentID).children("#timeBlock").children("#meridiemDropdown").val(alarms[i].alarm.meridiem.toString());
+                        $(currentID).children("#priorityBlock").children("#priorityDropdown").val(alarms[i].alarm.priority);
+                        
+                        // As long as we aren't on the last element, we will keep cloning the html structure.
+                        if(i != data.length - 1) {
+                            makeNewAlarm(); 
+                        }
+                    }
+                },
+                error: function() {
+                    console.log("Error loading the JSON file.");
+                } 
+            });
+            
+        });
+
+        function makeNewAlarm() {
             numAlarms++;
             var newID = "alarm" + numAlarms.toString();
-            $(".timeAlarm").last().clone().attr("id", newID).appendTo("#timeSection");                    
+            $(".timeAlarm").last().clone().attr("id", newID).appendTo("#timeSection");
+        };
+        
+        // When the new alarm button is clicked, the template for an alarm is copied and appended to the time section.
+        $("#newAlarmButton").click(function() {
+            makeNewAlarm();            
         });
         
         $("#saveAlarmsButton").click(function() {
@@ -157,7 +182,7 @@
                 var currentID = "#alarm" + currentAlarm.toString();
                 // Changes and orders the ids, to that there are no gaps inbetween, like when someone deletes one.
                 $(this).attr("id", currentID);
-                //console.log($(this).attr("id"));
+
                 // Increment the alarm number.
                 currentAlarm++;
             
@@ -165,6 +190,12 @@
                 var hour = $(this).children("#timeBlock").children("#hourDropdown").val();
                 var minute = $(this).children("#timeBlock").children("#minuteDropdown").val();
                 var meridiem = $(this).children("#timeBlock").children("#meridiemDropdown").val();
+                
+                
+                // Changes the JSON variable for hour, minute, and meridiem, to match the dropdown field.
+                alarm.hour = hour;
+                alarm.minute = minute;
+                alarm.meridiem = meridiem;
                 
                 // Turns the hour variable into an int so it can be manipulated.
                 hour = parseInt(hour);
@@ -182,7 +213,9 @@
                 alarm.id = currentID;
                 alarm.time = alarmDate;
                 alarm.priority = $(this).children("#priorityBlock").children("#priorityDropdown").val();
+                alarm.read = false;
                 
+                // Pushes each newly formed alarm object onto the temp array, which serves as the JSON framework.
                 temp.push({
                     alarm
                 });
@@ -192,16 +225,14 @@
             $.ajax({  
                 type: "POST",  
                 url: "php/writeJson.php", 
-                data: { data: JSON.stringify(temp) },
+                data: { data: temp },
                 success: function() {
                     console.log("Good job");
                 },
                 error: function() {
-                    console.log("You screwed up")
+                    console.log("Passage to PHP failed")
                 }
-            });
-            
-            
+            });  
         });
     </script>
 </body>
