@@ -8,7 +8,7 @@ MED = 1
 HIGH = 2 
 EMERGENCY = 3
 
-NOTIFICATIONS_DATABASE = "notifications.sqlite"
+NOTIFICATIONS_DATABASE = "/home/pi/SWEN-356-Weather-Machine/python/notifications.sqlite"
 
 def generate_notification(threshold):
     notifications_db = sqlite3.connect(NOTIFICATIONS_DATABASE)

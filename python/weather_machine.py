@@ -61,6 +61,8 @@ def main():
         jb.buildFile("history")
         db.close()
 
+        #build cron jobs
+
         time.sleep(READING_DELAY)
         
     db.close()

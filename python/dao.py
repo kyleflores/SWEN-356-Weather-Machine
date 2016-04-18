@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime, timedelta
 
 TIME_FORMAT = '%Y-%m-%d %H:%M:%S.%f'
-DB_NAME = 'sensor_data.sqlite'
+DB_NAME = '/home/pi/SWEN-356-Weather-Machine/python/sensor_data.sqlite'
 
 class DAO:
 
