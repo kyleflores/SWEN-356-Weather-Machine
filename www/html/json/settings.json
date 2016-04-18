@@ -28,4 +28,14 @@
         "priority":"high",
         "read":false
     }
+},{
+    "alarm": {
+        "hour":"11",
+        "minute":"15",
+        "meridiem":"morning",
+        "id":"#alarm3",
+        "time":"11:15:00",
+        "priority":"high",
+        "read":false
+    }
 }]

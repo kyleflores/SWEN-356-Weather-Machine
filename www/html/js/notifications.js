@@ -3,7 +3,7 @@ var unreadNoti = [];
 
 // request permission on page load
 document.addEventListener('DOMContentLoaded', function () {
-    grabNotifications();
+    checkAlarms();
 
     // Calls the refresh data function every minute.
     refreshData(5000);
@@ -18,8 +18,48 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 // Read and display data from JSON
-function grabNotifications() {
+function checkAlarms() {
     $("#notificationList").empty();
+
+    // Check settings for allowed time
+    var setAlarms = [];
+    $.ajax({
+        url: "json/settings.json",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (index, setting) {
+                setAlarms.push(setting.alarm);
+            })
+
+            for (i in setAlarms) {
+                var time = setAlarms[i].time;
+                if (setAlarms[i].meridiem == "morning") {
+                    time += "am"
+                } else {
+                    time += "pm"
+                }
+                time = new Date.parse(time);
+                //console.log(time);
+
+                // check if now is the time to alarm the user
+                var now = new Date.today().setTimeToNow();
+                var justBeforeNow = now.clone();
+                justBeforeNow.addMinutes(-5);
+                var justAfterNow = now.clone();
+                justAfterNow.addMinutes(5);
+                //console.log(justBeforeNow);
+                //console.log(justAfterNow);
+                if (time.between(justBeforeNow, justAfterNow)) {
+                    console.log(time + " yeah")
+                    grabNotifications();
+                }
+            }
+        }
+    });
+}
+
+function grabNotifications() {
+    // Grab data that matches the allowed time
     $.ajax({
         url: "json/notifications.json",
         dataType: "json",
@@ -30,11 +70,13 @@ function grabNotifications() {
                 });
             }
 
-            // make a temp list to check which notifications are unread
+            // make a new list to check which notifications are unread
             var newList = [];
             $.each(data, function (index, noti) {
                 newList.push(noti);
             });
+
+            // display the new list
             for (i in newList) {
                 noti = newList[i];
                 notiHtml = "<li class='list-group-item list-group-item-"
@@ -46,7 +88,6 @@ function grabNotifications() {
                     notiHtml += "success'>";
                 }
                 notiHtml += noti.message + "</li>";
-
                 $("#notificationList").append(notiHtml);
             }
 
@@ -84,7 +125,7 @@ function grabNotifications() {
 
 // Once the timer runs out, grabs new data.
 function refreshData(interval) {
-    setInterval(grabNotifications, interval)
+    setInterval(checkAlarms, interval)
 }
 
 function openNotifications() {
