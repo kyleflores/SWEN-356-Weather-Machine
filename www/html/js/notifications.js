@@ -17,10 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// Read and display data from JSON
+// Grab data that matches the allowed time
 function checkAlarms() {
     $("#notificationList").empty();
-
     // Check settings for allowed time
     var setAlarms = [];
     $.ajax({
@@ -39,7 +38,6 @@ function checkAlarms() {
                     time += "pm"
                 }
                 time = new Date.parse(time);
-                //console.log(time);
 
                 // check if now is the time to alarm the user
                 var now = new Date.today().setTimeToNow();
@@ -47,10 +45,7 @@ function checkAlarms() {
                 justBeforeNow.addMinutes(-5);
                 var justAfterNow = now.clone();
                 justAfterNow.addMinutes(5);
-                //console.log(justBeforeNow);
-                //console.log(justAfterNow);
                 if (time.between(justBeforeNow, justAfterNow)) {
-                    console.log(time + " yeah")
                     grabNotifications();
                 }
             }
@@ -58,8 +53,8 @@ function checkAlarms() {
     });
 }
 
+// Grab notifications data and output accordingly
 function grabNotifications() {
-    // Grab data that matches the allowed time
     $.ajax({
         url: "json/notifications.json",
         dataType: "json",
