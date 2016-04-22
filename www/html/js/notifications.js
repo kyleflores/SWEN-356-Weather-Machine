@@ -74,6 +74,7 @@ function grabNotifications() {
             });
 
             // display the new list in Homepage
+            $("#notificationList").empty();
             for (i in newList) {
                 noti = newList[i];
                 notiHtml = "<li class='list-group-item list-group-item-"
