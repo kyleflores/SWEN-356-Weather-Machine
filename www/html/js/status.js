@@ -21,7 +21,7 @@ $(document).ready(function () {
 });
 
 
-// Makes and AJAX call and refreshes the information on the page.
+/** Makes and AJAX call and refreshes the information on the page **/
 function grabData() {
     $.ajax({
         url: "json/current.json",
@@ -37,13 +37,13 @@ function grabData() {
     });
 }
 
-// Once the timer runs out, grabs new data.
+/** Once the timer runs out, grabs new data **/
 function refreshData(interval) {
     return setInterval(grabData, interval);
 }
 
 
-// Main Contents
+/** Main Contents **/
 function hideAll() {
     $("#tInfo").hide();
     $("#pInfo").hide();

@@ -1,9 +1,9 @@
-var currList = [];
-var unreadNoti = [];
+var currList = []; // notif list storage to check against
+var unreadNoti = []; // unread notif storage to check against
 
-// request permission on page load
+/** On load **/
 document.addEventListener('DOMContentLoaded', function () {
-    grabNotifications();
+    checkAlarms();
 
     // Calls the refresh data function every minute.
     refreshData(5000);
@@ -12,14 +12,51 @@ document.addEventListener('DOMContentLoaded', function () {
     if (currList.length != 0) {
 
     }
+
+    // Request permission
     if (Notification.permission !== "granted")
         Notification.requestPermission();
 });
 
 
-// Read and display data from JSON
-function grabNotifications() {
+/** Grab data that matches the allowed time **/
+function checkAlarms() {
     $("#notificationList").empty();
+    // Check settings for allowed time
+    var setAlarms = [];
+    $.ajax({
+        url: "json/settings.json",
+        dataType: "json",
+        success: function (data) {
+            $.each(data, function (index, setting) {
+                setAlarms.push(setting.alarm);
+            })
+
+            for (i in setAlarms) {
+                var time = setAlarms[i].time;
+                if (setAlarms[i].meridiem == "morning") {
+                    time += "am"
+                } else {
+                    time += "pm"
+                }
+                time = new Date.parse(time);
+
+                // check if now is the time to alarm the user
+                var now = new Date.today().setTimeToNow();
+                var justBeforeNow = now.clone();
+                justBeforeNow.addMinutes(-5);
+                var justAfterNow = now.clone();
+                justAfterNow.addMinutes(5);
+                if (time.between(justBeforeNow, justAfterNow)) {
+                    grabNotifications();
+                }
+            }
+        }
+    });
+}
+
+/** Grab notifications data and output accordingly **/
+function grabNotifications() {
     $.ajax({
         url: "json/notifications.json",
         dataType: "json",
@@ -30,11 +67,13 @@ function grabNotifications() {
                 });
             }
 
-            // make a temp list to check which notifications are unread
+            // make a new list to check which notifications are unread
             var newList = [];
             $.each(data, function (index, noti) {
                 newList.push(noti);
             });
+
+            // display the new list in Homepage
             for (i in newList) {
                 noti = newList[i];
                 notiHtml = "<li class='list-group-item list-group-item-"
@@ -46,7 +85,6 @@ function grabNotifications() {
                     notiHtml += "success'>";
                 }
                 notiHtml += noti.message + "</li>";
-
                 $("#notificationList").append(notiHtml);
             }
 
@@ -82,9 +120,9 @@ function grabNotifications() {
     });
 }
 
-// Once the timer runs out, grabs new data.
+/** Once the timer runs out, grabs new data **/
 function refreshData(interval) {
-    setInterval(grabNotifications, interval)
+    setInterval(checkAlarms, interval)
 }
 
 function openNotifications() {
@@ -97,7 +135,7 @@ function openNotifications() {
 }
 
 
-// Notification Web API
+/** Notification Web API **/
 function notifyMe(messageTitle, messageBody) {
     if (!Notification) {
         alert('Desktop notifications not available in your browser. Try Chromium.');

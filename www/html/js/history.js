@@ -10,7 +10,7 @@ $(document).ready(function () {
 });
 
 
-// Parse date/time to properly display in charts
+/** Parse date/time to properly display in charts **/
 function formatDateTime(raw) {
     var result = new Date.parse(raw.replace(/\.(.*)/, ""));
     var format;
@@ -27,7 +27,7 @@ function formatDateTime(raw) {
     return result.toString(format);
 }
 
-// Draw chart from data given by using HighCharts
+/** Draw chart from data given by using HighCharts **/
 function drawChart(dataObject) {
     var dataList = [];
     var timeList = [];
@@ -81,7 +81,7 @@ function drawChart(dataObject) {
     });
 }
 
-// Makes and AJAX call and refreshes the information on the page.
+/** Makes and AJAX call and refreshes the information on the page **/
 function grabData() {
     $.ajax({
         url: "json/history.json",
@@ -103,13 +103,13 @@ function grabData() {
     });
 }
 
-// Once the timer runs out, grabs new data.
+/** Once the timer runs out, grabs new data **/
 function refreshData(interval) {
     setInterval(grabData, interval)
 }
 
 
-// Main Contents
+/** Main Contents **/
 $('#tempTab a').click(function (e) {
     e.preventDefault();
     if (currType == "Temperature") {
