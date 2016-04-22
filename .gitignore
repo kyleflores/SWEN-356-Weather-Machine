@@ -1,6 +1,9 @@
 # Legacy HTML directory
 ./HTML/
 
+# Generated JSON
+./www/html/json/*.json
+
 # .pyc files
 *.pyc
 

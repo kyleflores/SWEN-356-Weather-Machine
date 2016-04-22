@@ -2,6 +2,7 @@ from sensortag import SensorTag
 import uuid_constants
 import convert
 import time
+import cron_jobs
 from dao import DAO
 from json_builder import JSONBuilder
 
@@ -61,7 +62,7 @@ def main():
         jb.buildFile("history")
         db.close()
 
-        #build cron jobs
+        cron_jobs.reset_alarms()
 
         time.sleep(READING_DELAY)
         
