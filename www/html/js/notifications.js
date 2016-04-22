@@ -1,7 +1,7 @@
-var currList = [];
-var unreadNoti = [];
+var currList = []; // notif list storage to check against
+var unreadNoti = []; // unread notif storage to check against
 
-// request permission on page load
+/** On load **/
 document.addEventListener('DOMContentLoaded', function () {
     checkAlarms();
 
@@ -12,12 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
     if (currList.length != 0) {
 
     }
+
+    // Request permission
     if (Notification.permission !== "granted")
         Notification.requestPermission();
 });
 
 
-// Grab data that matches the allowed time
+/** Grab data that matches the allowed time **/
 function checkAlarms() {
     $("#notificationList").empty();
     // Check settings for allowed time
@@ -53,7 +55,7 @@ function checkAlarms() {
     });
 }
 
-// Grab notifications data and output accordingly
+/** Grab notifications data and output accordingly **/
 function grabNotifications() {
     $.ajax({
         url: "json/notifications.json",
@@ -71,7 +73,7 @@ function grabNotifications() {
                 newList.push(noti);
             });
 
-            // display the new list
+            // display the new list in Homepage
             for (i in newList) {
                 noti = newList[i];
                 notiHtml = "<li class='list-group-item list-group-item-"
@@ -118,7 +120,7 @@ function grabNotifications() {
     });
 }
 
-// Once the timer runs out, grabs new data.
+/** Once the timer runs out, grabs new data **/
 function refreshData(interval) {
     setInterval(checkAlarms, interval)
 }
@@ -133,7 +135,7 @@ function openNotifications() {
 }
 
 
-// Notification Web API
+/** Notification Web API **/
 function notifyMe(messageTitle, messageBody) {
     if (!Notification) {
         alert('Desktop notifications not available in your browser. Try Chromium.');
