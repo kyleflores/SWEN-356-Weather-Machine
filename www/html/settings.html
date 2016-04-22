@@ -128,14 +128,14 @@
     <!-- jQuery must be called first because Boostrap relies on it -->
     <script src="js/jquery-1.12.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="json/alarms.json"></script>
+    <script type="text/javascript" src="json/settings.json"></script>
     <script>
         // Keeps track of how many alarms you currently have.
         var numAlarms = 0;
         
         $(document).ready(function() {
             $.ajax({
-                url: "json/alarms.json",
+                url: "json/settings.json",
                 dataType: "json",
                 success: function(data) {
                     var alarms = data;
@@ -224,13 +224,14 @@
             // Pass the newly formed JavaScript object array to a php file so it can be written to the JSON file.
             $.ajax({  
                 type: "POST",  
-                url: "php/writeJson.php", 
-                data: { data: temp },
+                url: "../../python/settings_updater.py", 
+                data: { data: JSON.stringify(temp) },
                 success: function() {
                     console.log("Good job");
+                    //console.log(JSON.stringify(temp));
                 },
                 error: function() {
-                    console.log("Passage to PHP failed")
+                    console.log("Passage to Python failed")
                 }
             });  
         });
