@@ -1,4 +1,5 @@
 import json, sys
+import cron_jobs
 
 class SettingsUpdater:
 
@@ -17,3 +18,12 @@ class SettingsUpdater:
         #write the updated JSON to the file and close it.
         fileWriter.write(data)
         fileWriter.close()
+
+def main():
+    #do json writing here
+    #cron_jobs.reset_alarms()
+    #f = open('/home/pi/test.output','w')
+    #f.write("hello world")
+    #f.close()
+
+main()

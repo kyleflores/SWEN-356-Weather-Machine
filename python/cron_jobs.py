@@ -36,4 +36,6 @@ def get_alarms():
         verbosity = ALARM_VERBOSITY[alarm['alarm']['priority']]
         time = datetime.strptime(alarm['alarm']['time'],"%H:%M:%S")
         alarms.append((time,verbosity))
-    return alarms
+    return alarmis
+
+reset_alarms()

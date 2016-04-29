@@ -224,11 +224,12 @@
             // Pass the newly formed JavaScript object array to a php file so it can be written to the JSON file.
             $.ajax({  
                 type: "POST",  
-                url: "../../python/settings_updater.py", 
-                data: { data: JSON.stringify(temp) },
+                url: "/php/writeJson.php",
+                //dataType:"json", 
+                data: { json: JSON.stringify(temp) },
                 success: function() {
                     console.log("Good job");
-                    //console.log(JSON.stringify(temp));
+                    console.log(JSON.stringify(temp));
                 },
                 error: function() {
                     console.log("Passage to Python failed")
