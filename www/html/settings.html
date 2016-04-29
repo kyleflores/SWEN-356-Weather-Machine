@@ -232,9 +232,12 @@
                     console.log(JSON.stringify(temp));
                 },
                 error: function() {
-                    console.log("Passage to Python failed")
+                    console.log("Passage to Php failed")
                 }
-            });  
+            });
+            
+            // Refresh the page to confirm saved changes.
+            window.location.reload();
         });
     </script>
 </body>
