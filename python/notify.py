@@ -2,6 +2,7 @@ import sqlite3
 import sys
 from dao import DAO, DB_NAME
 from datetime import datetime, timedelta
+import json
 
 LOW = 0
 MED = 1
@@ -9,6 +10,7 @@ HIGH = 2
 EMERGENCY = 3
 
 NOTIFICATIONS_DATABASE = "/home/pi/SWEN-356-Weather-Machine/python/notifications.sqlite"
+NOTIFICATIONS_JSON = "/home/pi/SWEN-356-Weather-Machine/www/html/json/notifications.json"
 
 def generate_notification(threshold):
     notifications_db = sqlite3.connect(NOTIFICATIONS_DATABASE)
@@ -25,6 +27,8 @@ def generate_notification(threshold):
         notifications_db_cur.execute(
             "INSERT INTO NOTIFICATIONS (time,importance,message,viewed) VALUES (?,?,?,?)",
             (datetime.now(),threshold,notification,False))
+
+    push_notifications(notifcations_db)
 
     notifications_db.commit()
     notifications_db.close()
@@ -77,6 +81,26 @@ def high_notifications(db):
 
 def emergency_notifications(db):
     return []
+
+def push_notifications(db):
+    db_cur = db.cursor()
+    old_notifications = json.loads(open(NOTIFICATIONS_JSON,"r").read())
+    new_notifications = {}
+    for key, value in old_notifications.items():
+        if value['viewed'] == 1:
+            db_cur.execute("UPDATE notifications SET viewed = 1 WHERE id = ?", (value['id'],))
+    db.commit()
+    unviewed_notifications = db_cur.execute("SELECT * FROM notifications AS n WHERE n.viewed = 0").fetchall()
+    for i in range(len(unviewed_notifications)):
+        new_notifications[i] = {}
+        new_notifications[i]["id"] = unviewed_notifications[i][0]
+        new_notifications[i]["time"] = unviewed_notifications[i][1]
+        new_notifications[i]["viewed"] = 0
+        new_notifications[i]["priority"] = unviewed_notifications[i][2]
+        new_notifications[i]["message"] = unviewed_notifications[i][3]
+    json_file = open(NOTIFICATIONS_JSON,"w")
+    json_file.write(json.dumps(new_notifications,indent=4))
+    json_file.close()
 
 NOTIFICATION_FUNCTIONS = {
     LOW: low_notifications,
