@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from crontab import CronTab
 from datetime import datetime
 import json
@@ -36,6 +38,6 @@ def get_alarms():
         verbosity = ALARM_VERBOSITY[alarm['alarm']['priority']]
         time = datetime.strptime(alarm['alarm']['time'],"%H:%M:%S")
         alarms.append((time,verbosity))
-    return alarmis
+    return alarms
 
 reset_alarms()

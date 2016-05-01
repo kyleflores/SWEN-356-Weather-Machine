@@ -225,16 +225,15 @@
             $.ajax({  
                 type: "POST",  
                 url: "/php/writeJson.php",
-                //dataType:"json", 
                 data: { json: JSON.stringify(temp) },
                 success: function() {
-                    console.log("Good job");
-                    console.log(JSON.stringify(temp));
+                    console.log("Alarms saved");
                 },
                 error: function() {
-                    console.log("Passage to Python failed")
+                    console.log("Alarms not saved");
                 }
-            });  
+            });
+
         });
     </script>
 </body>
