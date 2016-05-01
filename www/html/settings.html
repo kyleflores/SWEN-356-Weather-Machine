@@ -230,10 +230,12 @@
                     console.log("Alarms saved");
                 },
                 error: function() {
-                    console.log("Alarms not saved");
+                    console.log("Passage to Php failed")
                 }
             });
-
+            
+            // Refresh the page to confirm saved changes.
+            window.location.reload();
         });
     </script>
 </body>
