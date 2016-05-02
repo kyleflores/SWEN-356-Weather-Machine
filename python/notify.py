@@ -28,7 +28,7 @@ def generate_notification(threshold):
             "INSERT INTO NOTIFICATIONS (time,importance,message,viewed) VALUES (?,?,?,?)",
             (datetime.now(),threshold,notification,False))
 
-    push_notifications(notifcations_db)
+    push_notifications(notifications_db)
 
     notifications_db.commit()
     notifications_db.close()
