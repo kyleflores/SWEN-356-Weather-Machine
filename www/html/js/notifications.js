@@ -1,9 +1,15 @@
+var setAlarms = []; // user-input alarm time
+var localDataObject = {}; // a temporary copy of the json data grabbed
+var isFirstTimeLoaded = true;
+var notified = [];
+
 var currList = []; // notif list storage to check against
-var unreadNoti = []; // unread notif storage to check against
+
 
 /** On load **/
 document.addEventListener('DOMContentLoaded', function () {
-    checkAlarms();
+    //checkAlarms();
+    grabNotifications();
 
     // Calls the refresh data function every minute.
     refreshData(5000);
@@ -20,37 +26,63 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 /** Grab data that matches the allowed time **/
-function checkAlarms() {
+function checkAlarms(notificationList) {
     $("#notificationList").empty();
     // Check settings for allowed time
-    var setAlarms = [];
     $.ajax({
         url: "json/settings.json",
         dataType: "json",
         success: function (data) {
             $.each(data, function (index, setting) {
                 setAlarms.push(setting.alarm);
-            })
+            });
 
-            for (i in setAlarms) {
-                var time = setAlarms[i].time;
+            var now = new Date.today().setTimeToNow();
+            var justBeforeNow = now.clone();
+            justBeforeNow.addMinutes(-5);
+            var justAfterNow = now.clone();
+            justAfterNow.addMinutes(5);
+
+
+            for (var i in setAlarms) {
                 if (setAlarms[i].meridiem == "morning") {
-                    time += "am"
-                } else {
-                    time += "pm"
-                }
-                time = new Date.parse(time);
+                    setAlarms[i].parsedTime = new Date.parse(setAlarms[i].time + "am");
 
+                } else {
+                    setAlarms[i].parsedTime = new Date.parse(setAlarms[i].time + "pm");
+                }
+                //console.log(time);
                 // check if now is the time to alarm the user
-                var now = new Date.today().setTimeToNow();
-                var justBeforeNow = now.clone();
-                justBeforeNow.addMinutes(-5);
-                var justAfterNow = now.clone();
-                justAfterNow.addMinutes(5);
-                if (time.between(justBeforeNow, justAfterNow)) {
-                    grabNotifications();
+                //if (time.between(justBeforeNow, justAfterNow)) {
+                //    for (var i in notificationList) {
+                //        //notifyMe("title", toNotify[i].message);
+                //        //notified.push(toNotify[i]);
+                //        console.log(notificationList[i].time);
+                //    }
+                //}
+            }
+            /*  for each notif, check if the time is around now
+             if true
+             for each alarm, check if alarm time is around now
+             if true, check if notif's priority is equal to each other
+             break to prevent duplicates
+             */
+            for (var i in notificationList) {
+                notifTime = new Date.parse(notificationList[i].time.replace(/\.(.*)/, ""));
+                if (notifTime.between(justBeforeNow, justAfterNow)) {
+                    for (var j in setAlarms) {
+                        if (setAlarms[j].parsedTime.between(justBeforeNow, justAfterNow)) {
+                            if (notificationList[i].priority == setAlarms[j].priority) {
+                                notifyMe("title", notificationList[i].message);
+                                notified.push(notificationList[i]);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
+
+
         }
     });
 }
@@ -61,78 +93,83 @@ function grabNotifications() {
         url: "json/notifications.json",
         dataType: "json",
         success: function (data) {
-            if (currList.length == 0) {
-                $.each(data, function (index, noti) {
-                    currList.push(noti);
-                });
-            }
-
-            // make a new list to check which notifications are unread
-            var newList = [];
-            $.each(data, function (index, noti) {
-                newList.push(noti);
-            });
+            var toNotify = [];
+            localDataObject = data;
 
             // display the new list in Homepage
             $("#notificationList").empty();
-            for (i in newList) {
-                noti = newList[i];
-                notiHtml = "<li class='list-group-item list-group-item-"
-                if (noti.priority.toLowerCase() == "high") {
-                    notiHtml += "danger'>";
-                } else if (noti.priority.toLowerCase() == "medium") {
-                    notiHtml += "warning'>";
-                } else if (noti.priority.toLowerCase() == "low") {
-                    notiHtml += "success'>";
+            for (var i in localDataObject) {
+                toNotify.push(localDataObject[i]);
+                noti = localDataObject[i];
+                // display if not viewed
+                if (noti.viewed == 0) {
+                    notiHtml = "<li class='list-group-item";
+                    if (noti.priority == 3) {
+                        notiHtml += " list-group-item-danger'>";
+                    } else if (noti.priority == 2) {
+                        notiHtml += " list-group-item-warning'>";
+                    } else if (noti.priority == 1) {
+                        notiHtml += " list-group-item-success'>";
+                    } else if (noti.priority == 0) {
+                        notiHtml += "'>";
+                    }
+                    notiHtml += noti.message + "</li>";
+                    $("#notificationList").append(notiHtml);
                 }
-                notiHtml += noti.message + "</li>";
-                $("#notificationList").append(notiHtml);
             }
-
-            // remove if notification isn't new
-            for (i in newList) {
-                if (currList[i]) {
-                    if (currList[i].id == newList[i].id) {
-                        newList.splice(i, 1, null);
+            // don't notify on page load
+            if (isFirstTimeLoaded) {
+                toNotify = [];
+                for (i in localDataObject) {
+                    notified.push(localDataObject[i]);
+                }
+            }
+            // set to null then filter out if already notified
+            if (!isFirstTimeLoaded) {
+                for (i in toNotify) {
+                    for (j in notified) {
+                        if (toNotify[i] != null && toNotify[i].id == notified[j].id) {
+                            toNotify.splice(i, 1, null);
+                        }
                     }
                 }
             }
-            newList = newList.filter(function (element) {
+            toNotify = toNotify.filter(function (element) {
                 return element != null;
             });
 
-            // check if already in unreadList; else notify
-            for (i in newList) {
-                if (!unreadNoti[i]) {
-                    console.log("notify " + newList[i].message)
-                    notifyMe("title", newList[i].message)
-                }
-            }
+            // notify
+            checkAlarms(toNotify);
 
             // display number of notifications unread
-            unreadNoti = newList;
+            var unreadNoti = [];
+            for (var i in localDataObject) {
+                if (localDataObject[i].viewed == 0) {
+                    unreadNoti.push(localDataObject[i]);
+                }
+            }
             if (unreadNoti.length > 0) {
                 $("#notiNum").html('<span class="badge">' +
                     unreadNoti.length +
                     '</span>');
                 document.title = "(" + unreadNoti.length + ") The Weather Machine";
             }
+
+            isFirstTimeLoaded = false;
         }
     });
 }
 
 /** Once the timer runs out, grabs new data **/
 function refreshData(interval) {
-    setInterval(checkAlarms, interval)
+    setInterval(grabNotifications, interval)
 }
 
 function openNotifications() {
-    unreadNoti.forEach(function (element) {
-        currList.push(element);
-    });
-    unreadNoti = [];
+    // TODO don't delete them just yet
     $("#notiNum").empty();
     document.title = "The Weather Machine";
+    // TODO send viewed data back to the json file HERE
 }
 
 
