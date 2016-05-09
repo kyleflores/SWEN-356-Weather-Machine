@@ -221,7 +221,6 @@
                 });
             });
 
-            console.log(JSON.stringify(temp));
             // Pass the newly formed JavaScript object array to a php file so it can be written to the JSON file.
             $.ajax({  
                 type: "POST",  
@@ -229,7 +228,6 @@
                 data: { json: JSON.stringify(temp) },
                 success: function() {
                     console.log("Alarms saved");
-                    console.log(temp);
                 },
                 error: function() {
                     console.log("Passage to Php failed")
@@ -237,7 +235,7 @@
             });
             
             // Refresh the page to confirm saved changes.
-            //window.location.reload();
+            window.location.reload();
         });
     </script>
 </body>
