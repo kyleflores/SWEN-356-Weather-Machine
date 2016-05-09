@@ -112,9 +112,9 @@
                 <div id="priorityBlock">
                     <p>Priority Threshold</p>
                     <select id="priorityDropdown">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
                     </select>
                 </div>
                 <hr>
@@ -148,7 +148,7 @@
                         $(currentID).children("#timeBlock").children("#hourDropdown").val(alarms[i].alarm.hour.toString());
                         $(currentID).children("#timeBlock").children("#minuteDropdown").val(alarms[i].alarm.minute.toString());
                         $(currentID).children("#timeBlock").children("#meridiemDropdown").val(alarms[i].alarm.meridiem.toString());
-                        $(currentID).children("#priorityBlock").children("#priorityDropdown").val(alarms[i].alarm.priority);
+                        $(currentID).children("#priorityBlock").children("#priorityDropdown").val(alarms[i].alarm.priority.toString());
                         
                         // As long as we aren't on the last element, we will keep cloning the html structure.
                         if(i != data.length - 1) {
@@ -212,7 +212,7 @@
                 
                 alarm.id = currentID;
                 alarm.time = alarmDate;
-                alarm.priority = $(this).children("#priorityBlock").children("#priorityDropdown").val();
+                alarm.priority = parseInt($(this).children("#priorityBlock").children("#priorityDropdown").val());
                 alarm.read = false;
                 
                 // Pushes each newly formed alarm object onto the temp array, which serves as the JSON framework.
