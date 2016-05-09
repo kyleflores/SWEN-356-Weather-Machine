@@ -11,12 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     grabNotifications();
 
     // Calls the refresh data function every minute.
-    refreshData(5000);
-
-    // Animate accordion if notification list is not empty
-    if (currList.length != 0) {
-
-    }
+    refreshData(30000);
 
     // Request permission
     if (Notification.permission !== "granted")
@@ -72,7 +67,7 @@ function checkAlarms(notificationList) {
                 if (notifTime && notifTime.between(justBeforeNow, justAfterNow)) {
                     for (var j in setAlarms) {
                         if (notificationList[i].priority == setAlarms[j].priority) {
-                            notifyMe("title", notificationList[i].message);
+                            notifyMe("Weather Machine has new notification(s)!", notificationList[i].message);
                             notified.push(notificationList[i]);
                             break;
                         }
@@ -107,7 +102,7 @@ function grabNotifications() {
                     } else if (noti.priority == 1) {
                         notiHtml += " list-group-item-success'>";
                     } else if (noti.priority == 0) {
-                        notiHtml += "'>";
+                        notiHtml += " list-group-item-info'>";
                     }
                     notiHtml += noti.message + "</li>";
                     $("#notificationList").append(notiHtml);
@@ -152,7 +147,6 @@ function grabNotifications() {
             } else {
                 $("#notiNum").empty;
             }
-
             isFirstTimeLoaded = false;
         }
     });
@@ -173,17 +167,17 @@ function openNotifications() {
     for (var i in localDataObject) {
         localDataObject[i].viewed = 1;
     }
-    //$.ajax({
-    //    type: "POST",
-    //    url: "/php/writeNotifications.php",
-    //    data: {json: JSON.stringify(localDataObject)},
-    //    success: function () {
-    //        console.log("Notifications saved");
-    //    },
-    //    error: function () {
-    //        console.log("Passage to Php failed")
-    //    }
-    //});
+    $.ajax({
+        type: "POST",
+        url: "/php/writeNotifications.php",
+        data: {json: JSON.stringify(localDataObject)},
+        success: function () {
+            console.log("Notifications saved");
+        },
+        error: function () {
+            console.log("Passage to Php failed");
+        }
+    });
 }
 
 
@@ -196,11 +190,11 @@ function notifyMe(messageTitle, messageBody) {
     if (Notification.permission !== "granted")
         Notification.requestPermission();
     else {
-        notification = new Notification('Notification title', {
+        notification = new Notification(messageTitle, {
             icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
             body: messageBody
         });
-        setTimeout(notification.close.bind(notification), 3000);
+        setTimeout(notification.close.bind(notification), 6000);
 
         notification.onclick = function () {
             notification.close();
