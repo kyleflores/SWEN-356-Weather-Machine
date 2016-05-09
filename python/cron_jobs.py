@@ -12,9 +12,9 @@ NOTIFICATION_COMMAND = NOTIFICATION_USER + " python3 /home/" + \
 JSON_SETTINGS_FILE = "/home/pi/SWEN-356-Weather-Machine/www/html/json/settings.json"
 
 ALARM_VERBOSITY = {
-    "low":'0',
-    "medium":'1',
-    "high":'2'
+    0:'0',
+    1:'1',
+    2:'2'
     }
 
 def reset_alarms():
@@ -22,7 +22,7 @@ def reset_alarms():
     cron.remove_all(comment=NOTIFICATION_COMMENT)
     job = None
     for alarm in get_alarms():
-        job = cron.new(command=NOTIFICATION_COMMAND + alarm[1],\
+        job = cron.new(command=NOTIFICATION_COMMAND + str(alarm[1]),\
             comment=NOTIFICATION_COMMENT, user=True)
         job.hour.on(alarm[0].hour)
         job.minute.on(alarm[0].minute)
