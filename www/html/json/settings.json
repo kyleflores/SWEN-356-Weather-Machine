@@ -36,10 +36,10 @@
     "alarm": {
       "hour": "15",
       "minute": "50",
-      "meridiem": "evening",
+      "meridiem": "morning",
       "id": "#alarm3",
-      "time": "04:00:00",
-      "priority": "0",
+      "time": "11:00:00",
+      "priority": "1",
       "read": false
     }
   }
